@@ -1,0 +1,6 @@
+[janitoo.components]
+roomba.vacuum = janitoo_roomba.roomba:make_vacuum
+
+[janitoo.threads]
+roomba = janitoo_roomba.roomba:make_thread
+
