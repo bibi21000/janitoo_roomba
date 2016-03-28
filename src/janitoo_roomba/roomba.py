@@ -29,7 +29,7 @@ __copyright__ = "Copyright © 2013-2014-2015 Sébastien GALLET aka bibi21000"
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
-logger = logging.getLogger('janitoo.roomba')
+logger = logging.getLogger(__name__)
 import os, sys
 import threading
 import requests
@@ -54,11 +54,7 @@ assert(COMMAND_DESC[COMMAND_METER] == 'COMMAND_METER')
 assert(COMMAND_DESC[COMMAND_ROOMBA_VACUUM] == 'COMMAND_ROOMBA_VACUUM')
 ##############################################################
 
-def make_thread(options):
-    if get_option_autostart(options, 'roomba') == True:
-        return RoombaThread(options)
-    else:
-        return None
+from janitoo_roomba.thread import OID
 
 def make_vacuum(**kwargs):
     return RoombaVacuum(**kwargs)
@@ -117,16 +113,6 @@ states = {
     8:"Maximun",
     }
 
-class RoombaThread(JNTBusThread):
-    """The Roomba thread
-    """
-
-    def init_bus(self):
-        """Build the bus
-        """
-        self.section = 'roomba'
-        self.bus = JNTBus(options=self.options, oid=self.section, product_name="Roomba controller")
-
 class RoombaVacuum(JNTComponent):
     """This class abstracts a roowifi and gives attributes for telemetry data,
     as well as methods to command the robot
@@ -134,7 +120,7 @@ class RoombaVacuum(JNTComponent):
     def __init__(self, bus=None, addr=None, **kwargs):
         """
         """
-        JNTComponent.__init__(self, 'roomba.vacuum', bus=bus, addr=addr, name="Roomba Vacuum series",
+        JNTComponent.__init__(self, '%s.vacuum'%OID, bus=bus, addr=addr, name="Roomba Vacuum series",
                 product_name="Roomba Vacuum", product_type="Roowifi", product_manufacturer="IRobot", **kwargs)
         logger.debug("[%s] - __init__ node uuid:%s", self.__class__.__name__, self.uuid)
         self._lock = threading.Lock()

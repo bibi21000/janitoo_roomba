@@ -23,9 +23,9 @@ __email__ = 'bibi21000@gmail.com'
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
-logger = logging.getLogger('janitoo.roomba')
+logger = logging.getLogger(__name__)
 import sys, os, re, shutil, datetime
-from janitoo_roomba.server import RoombaServer
+from janitoo.server import JNTServer
 from janitoo.runner import Runner, jnt_parse_args
 
 class MyRoombaServer(Runner):
@@ -36,7 +36,7 @@ class MyRoombaServer(Runner):
         #print self.options
 
     def app_run(self):
-        self.server = RoombaServer(self.options)
+        self.server = JNTServer(self.options)
         self.server.start()
         self.server.run()
 

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Unittests for Hostsensor Server.
+"""Unittests for Janitoo-Roomba Server.
 """
 __license__ = """
     This file is part of Janitoo.
@@ -35,24 +35,28 @@ from pkg_resources import iter_entry_points
 
 from janitoo_nosetests.server import JNTTServer, JNTTServerCommon
 from janitoo_nosetests.thread import JNTTThread, JNTTThreadCommon
+from janitoo_nosetests.component import JNTTComponent, JNTTComponentCommon
 
 from janitoo.utils import json_dumps, json_loads
 from janitoo.utils import HADD_SEP, HADD
-from janitoo.utils import TOPIC_HEARTBEAT, NETWORK_REQUESTS
+from janitoo.utils import TOPIC_HEARTBEAT
 from janitoo.utils import TOPIC_NODES, TOPIC_NODES_REPLY, TOPIC_NODES_REQUEST
 from janitoo.utils import TOPIC_BROADCAST_REPLY, TOPIC_BROADCAST_REQUEST
 from janitoo.utils import TOPIC_VALUES_USER, TOPIC_VALUES_CONFIG, TOPIC_VALUES_SYSTEM, TOPIC_VALUES_BASIC
 
-from janitoo_nut.server import NutServer
+from janitoo_nut.nut import NutThread
 
-class TestRoombaSerser(JNTTServer, JNTTServerCommon):
-    """Test the server
+##############################################################
+#Check that we are in sync with the official command classes
+#Must be implemented for non-regression
+from janitoo.classes import COMMAND_DESC
+
+COMMAND_DISCOVERY = 0x5000
+
+assert(COMMAND_DESC[COMMAND_DISCOVERY] == 'COMMAND_DISCOVERY')
+##############################################################
+
+class TestComponentUps(JNTTComponent, JNTTComponentCommon):
+    """Test the component
     """
-    loglevel = logging.DEBUG
-    path = '/tmp/janitoo_test'
-    broker_user = 'toto'
-    broker_password = 'toto'
-    server_class = NutServer
-    server_conf = "tests/data/janitoo_roomba.conf"
-    hadds = [HADD%(21,0), HADD%(21,1)]
-
+    component_name = "roomba.ups"

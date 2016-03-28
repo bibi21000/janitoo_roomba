@@ -2,7 +2,7 @@ README.rst
 setup.py
 src/janitoo_roomba/__init__.py
 src/janitoo_roomba/roomba.py
-src/janitoo_roomba/server.py
+src/janitoo_roomba/thread.py
 src/janitoo_roomba.egg-info/PKG-INFO
 src/janitoo_roomba.egg-info/SOURCES.txt
 src/janitoo_roomba.egg-info/dependency_links.txt
