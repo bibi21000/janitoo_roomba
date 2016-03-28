@@ -43,7 +43,7 @@ from janitoo.utils import TOPIC_NODES, TOPIC_NODES_REPLY, TOPIC_NODES_REQUEST
 from janitoo.utils import TOPIC_BROADCAST_REPLY, TOPIC_BROADCAST_REQUEST
 from janitoo.utils import TOPIC_VALUES_USER, TOPIC_VALUES_CONFIG, TOPIC_VALUES_SYSTEM, TOPIC_VALUES_BASIC
 
-from janitoo_nut.server import NutServer
+from janitoo.server import JNTServer
 
 class TestRoombaSerser(JNTTServer, JNTTServerCommon):
     """Test the server
@@ -52,7 +52,7 @@ class TestRoombaSerser(JNTTServer, JNTTServerCommon):
     path = '/tmp/janitoo_test'
     broker_user = 'toto'
     broker_password = 'toto'
-    server_class = NutServer
+    server_class = JNTServer
     server_conf = "tests/data/janitoo_roomba.conf"
     hadds = [HADD%(21,0), HADD%(21,1)]
 
