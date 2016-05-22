@@ -123,8 +123,12 @@ class RoombaVacuum(JNTComponent):
     def __init__(self, bus=None, addr=None, **kwargs):
         """
         """
-        JNTComponent.__init__(self, '%s.vacuum'%OID, bus=bus, addr=addr, name="Roomba Vacuum series",
-                product_name="Roomba Vacuum", product_type="Roowifi", product_manufacturer="IRobot", **kwargs)
+        oid = kwargs.pop('oid','%s.vacuum'%OID)
+        name = kwargs.pop('name', "Roomba Vacuum series")
+        product_name = kwargs.pop('product_name', "Roomba Vacuum")
+        product_type = kwargs.pop('product_type', "Roowifi")
+        JNTComponent.__init__(self, oid, bus=bus, addr=addr, name=name,
+                product_name=product_name, product_type=product_type, **kwargs)
         logger.debug("[%s] - __init__ node uuid:%s", self.__class__.__name__, self.uuid)
         self._lock = threading.Lock()
         self._current = -1.0
