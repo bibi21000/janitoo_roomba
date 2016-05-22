@@ -21,7 +21,7 @@ __license__ = """
 """
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
-__copyright__ = "Copyright © 2013-2014 Sébastien GALLET aka bibi21000"
+__copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000"
 
 from os import name as os_name
 from setuptools import setup, find_packages
@@ -53,17 +53,6 @@ def data_files_config(res, rsrc, src, pattern):
 
 data_files = []
 data_files_config(data_files, 'docs','src/docs/','*')
-
-#You must define a variable like the one below.
-#It will be used to collect entries without installing the package
-janitoo_entry_points = {
-    "janitoo.threads": [
-        "roomba = janitoo_roomba.thread:make_thread",
-    ],
-    "janitoo.components": [
-        "roomba.vacuum = janitoo_roomba.roomba:make_vacuum",
-    ],
-}
 
 setup(
     name = 'janitoo_roomba',
@@ -98,11 +87,20 @@ setup(
     install_requires=[
                      'janitoo',
                      'janitoo_factory',
+                     'janitoo_factory_exts',
                      'requests',
                     ],
     dependency_links = [
       'https://github.com/bibi21000/janitoo/archive/master.zip#egg=janitoo',
       'https://github.com/bibi21000/janitoo_factory/archive/master.zip#egg=janitoo_factory',
+      'https://github.com/bibi21000/janitoo_factory_exts/archive/master.zip#egg=janitoo_factory_exts',
     ],
-    entry_points = janitoo_entry_points,
+    entry_points = {
+        "janitoo.threads": [
+            "roomba = janitoo_roomba.thread:make_thread",
+        ],
+        "janitoo.components": [
+            "roomba.vacuum = janitoo_roomba.roomba:make_vacuum",
+        ],
+    },
 )

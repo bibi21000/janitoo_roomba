@@ -24,7 +24,7 @@ else
 python_version_full := $(wordlist 2,4,$(subst ., ,$(shell ${PYTHON_EXEC} --version 2>&1)))
 endif
 
-janitoo_version := $(shell ${PYTHON_EXEC} _version.py)
+janitoo_version := $(shell ${PYTHON_EXEC} _version.py 2>/dev/null)
 
 python_version_major = $(word 1,${python_version_full})
 python_version_minor = $(word 2,${python_version_full})
@@ -36,8 +36,8 @@ ifeq (${python_version_major},3)
 endif
 
 MODULENAME   = $(shell basename `pwd`)
-
-NOSECOVER     = --cover-package=janitoo,janitoo_db,${MODULENAME} --with-coverage --cover-inclusive --cover-tests --cover-html --cover-html-dir=${BUILDDIR}/docs/html/tools/coverage --with-html --html-file=${BUILDDIR}/docs/html/tools/nosetests/index.html
+NOSEMODULES  = janitoo,janitoo_factory,janitoo_db
+MOREMODULES  = janitoo_factory_ext
 
 DEBIANDEPS := $(shell [ -f debian.deps ] && cat debian.deps)
 BASHDEPS := $(shell [ -f bash.deps ] && echo "bash.deps")
@@ -48,7 +48,10 @@ TAGGED := $(shell git tag | grep -c v${janitoo_version} )
 
 -include Makefile.local
 
-.PHONY: help check-tag clean all build develop install uninstall clean-doc doc certification tests pylint deps
+NOSECOVER     = --cover-package=${MODULENAME} --with-coverage --cover-inclusive --cover-html --cover-html-dir=${BUILDDIR}/docs/html/tools/coverage --with-html --html-file=${BUILDDIR}/docs/html/tools/nosetests/index.html
+NOSEDOCKER     = --cover-package=${NOSEMODULES},${MODULENAME},${MOREMODULES} --with-coverage --cover-inclusive --with-xunit --xunit-testsuite-name=${MODULENAME}
+
+.PHONY: help check-tag clean all build develop install uninstall clean-doc doc certification tests pylint deps docker-tests
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
@@ -67,14 +70,10 @@ clean-dist:
 clean: clean-doc
 	-rm -rf $(ARCHBASE)
 	-rm -rf $(BUILDDIR)
-	-rm -f generated_doc
-	-rm -f janidoc
 	-rm -f .coverage
 	-@find . -name \*.pyc -delete
 
 uninstall:
-	-yes | ${PIP_EXEC} uninstall ${MODULENAME}
-	-${PYTHON_EXEC} setup.py develop --uninstall
 	-yes | ${PIP_EXEC} uninstall ${MODULENAME}
 	-${PYTHON_EXEC} setup.py develop --uninstall
 	#~ -@find . -name \*.egg-info -type d -exec rm -rf "{}" \;
@@ -92,9 +91,12 @@ endif
 clean-doc:
 	-rm -Rf ${BUILDDIR}/docs
 	-rm -Rf ${BUILDDIR}/janidoc
+	-rm -f objects.inv
+	-rm -f generated_doc
+	-rm -f janidoc
 
 janidoc:
-	ln -s /opt/janitoo/src/janidoc janidoc
+	-ln -s /opt/janitoo/src/janitoo_sphinx janidoc
 
 apidoc:
 	-rm -rf ${BUILDDIR}/janidoc/source/api
@@ -104,16 +106,47 @@ apidoc:
 	cp -Rf janidoc/* ${BUILDDIR}/janidoc/
 	cd ${BUILDDIR}/janidoc/source/api && sphinx-apidoc --force --no-toc -o . ../../../../src/
 	cd ${BUILDDIR}/janidoc/source/api && mv ${MODULENAME}.rst index.rst
-	cd ${BUILDDIR}/janidoc/source && ./janitoo_collect.py  >extensions/index.rst
 
 doc: janidoc apidoc
 	- [ -f transitions_graph.py ] && python transitions_graph.py
 	-cp -Rf rst/* ${BUILDDIR}/janidoc/source
+	sed -i -e "s/MODULE_NAME/${MODULENAME}/g" ${BUILDDIR}/janidoc/source/tools/index.rst
 	make -C ${BUILDDIR}/janidoc html
 	cp ${BUILDDIR}/janidoc/source/README.rst README.rst
 	-ln -s $(BUILDDIR)/docs/html generated_doc
 	@echo
 	@echo "Documentation finished."
+
+github.io:
+	git checkout --orphan gh-pages
+	git rm -rf .
+	touch .nojekyll
+	git add .nojekyll
+	git commit -m "Initial import" -a
+	git push origin gh-pages
+	git checkout master
+	@echo
+	@echo "github.io branch initialised."
+
+doc-full: tests pylint doc-commit
+
+doc-commit: doc
+	git checkout gh-pages
+	cp -Rf build/docs/html/* .
+	git add *.html
+	git add *.js
+	git add tools/
+	git add api/
+	git add extensions/
+	-git add _images/
+	-git add _modules/
+	-git add _sources/
+	-git add _static/
+	git commit -m "Auto-commit documentation" -a
+	git push origin gh-pages
+	git checkout master
+	@echo
+	@echo "Documentation published to github.io."
 
 pylint:
 	-mkdir -p ${BUILDDIR}/docs/html/tools/pylint
@@ -130,22 +163,36 @@ develop:
 	@echo "Installation for developpers of ${MODULENAME} finished."
 
 docker-deps:
+	-cp -rf docker/config/* /opt/janitoo/etc/
+	-cp -rf docker/supervisor.conf.d/* /etc/supervisor/janitoo.conf.d/
+	-cp -rf docker/supervisor-tests.conf.d/* /etc/supervisor/janitoo-tests.conf.d/
+	-cp -rf docker/nginx/* /etc/nginx/conf.d/
+	true
 	@echo
 	@echo "Docker dependencies for ${MODULENAME} installed."
+
+directories:
+	-sudo mkdir /opt/janitoo
+	-sudo chown -Rf ${USER}:${USER} /opt/janitoo
+	-for dir in cache cache/janitoo_manager home log run etc init; do mkdir /opt/janitoo/$$dir; done
 
 travis-deps:
 	sudo apt-get install -y python-pip
 	git clone https://github.com/bibi21000/janitoo_mosquitto.git
 	make -C janitoo_mosquitto deps
 	make -C janitoo_mosquitto develop
-	sudo mkdir /opt/janitoo
-	sudo chown -Rf ${USER}:${USER} /opt/janitoo
-	for dir in src cache cache/janitoo_manager home log run etc init; do mkdir /opt/janitoo/$$dir; done
 	pip install git+git://github.com/bibi21000/janitoo_nosetests@master
 	pip install git+git://github.com/bibi21000/janitoo_nosetests_flask@master
 	pip install coveralls
 	@echo
 	@echo "Travis dependencies for ${MODULENAME} installed."
+
+docker-tests:
+	@echo
+	@echo "Docker tests for ${MODULENAME} start."
+	[ -f tests/test_docker.py ] && $(NOSE) $(NOSEOPTS) $(NOSEDOCKER) tests/test_docker.py
+	@echo
+	@echo "Docker tests for ${MODULENAME} finished."
 
 tests:
 	-mkdir -p ${BUILDDIR}/docs/html/tools/coverage
@@ -174,12 +221,11 @@ tar:
 	@echo
 	@echo "Archive for ${MODULENAME} version ${janitoo_version} created"
 
-commit: develop
+commit:
 	-git add rst/
 	-cp rst/README.rst .
 	-git add README.rst
-	-git commit -m "$(message)" -a
-	git push
+	git commit -m "$(message)" -a && git push
 	@echo
 	@echo "Commits for branch master pushed on github."
 

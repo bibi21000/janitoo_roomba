@@ -25,7 +25,7 @@ __license__ = """
 """
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
-__copyright__ = "Copyright © 2013-2014-2015 Sébastien GALLET aka bibi21000"
+__copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000"
 
 # Set default logging handler to avoid "No handler found" warnings.
 import logging
@@ -55,8 +55,8 @@ assert(COMMAND_DESC[COMMAND_ROOMBA_VACUUM] == 'COMMAND_ROOMBA_VACUUM')
 
 OID = 'roomba'
 
-def make_thread(options):
-    if get_option_autostart(options, OID) == True:
+def make_thread(options, force=False):
+    if get_option_autostart(options, OID) == True or force:
         return RoombaThread(options)
     else:
         return None

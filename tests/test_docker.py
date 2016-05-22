@@ -50,3 +50,7 @@ class TestRoombaSerser(JNTTDockerServer, JNTTDockerServerCommon):
     server_class = JNTServer
     server_conf = "tests/data/janitoo_roomba.conf"
     hadds = [HADD%(21,0), HADD%(21,1)]
+
+    def test_040_server_start_no_error_in_log(self):
+        JNTTDockerServer.onlyDockerTest()
+        JNTTDockerServerCommon.minimal_040_server_start_reload_restart(self)

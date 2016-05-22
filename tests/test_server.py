@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Unittests for Hostsensor Server.
+"""Unittests for Roomba Server.
 """
 __license__ = """
     This file is part of Janitoo.
@@ -21,7 +21,7 @@ __license__ = """
 """
 __author__ = 'Sébastien GALLET aka bibi21000'
 __email__ = 'bibi21000@gmail.com'
-__copyright__ = "Copyright © 2013-2014-2015 Sébastien GALLET aka bibi21000"
+__copyright__ = "Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000"
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -62,5 +62,4 @@ class TestRoombaSerser(JNTTServer, JNTTServerCommon):
 
     def test_040_server_start_no_error_in_log(self):
         self.skipCITest()
-        self.skipDockerTest()
         JNTTServerCommon.test_040_server_start_no_error_in_log(self)
