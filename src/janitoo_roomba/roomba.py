@@ -305,7 +305,7 @@ class RoombaVacuum(JNTComponent):
                     except ZeroDivisionError:
                         self._battery = -1.0
                     self._telemetry_last = True
-                except:
+                except Exception:
                     logger.exception("[%s] - Exception in get_telemetry", self.__class__.__name__)
                     self._telemetry_last = False
                 finally:
@@ -397,6 +397,6 @@ class RoombaVacuum(JNTComponent):
             if str(command) == "max" :
                 sensors['State'] =  State[int(8)]
             return True
-        except:
+        except Exception:
             self._log.error(" %s Command Failed on %s" % (command,device))
             return False
