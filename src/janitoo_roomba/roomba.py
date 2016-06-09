@@ -398,5 +398,5 @@ class RoombaRoowifi(JNTComponent):
                 sensors['State'] =  State[int(8)]
             return True
         except Exception:
-            self._log.error(" %s Command Failed on %s" % (command,device))
+            self._log.error("%s Command Failed on %s" % (command,device))
             return False
