@@ -53,10 +53,10 @@ assert(COMMAND_DESC[COMMAND_METER] == 'COMMAND_METER')
 assert(COMMAND_DESC[COMMAND_ROOMBA_VACUUM] == 'COMMAND_ROOMBA_VACUUM')
 ##############################################################
 
-OID = 'roomba'
+from janitoo_roomba import OID
 
 def make_thread(options, force=False):
-    if get_option_autostart(options, OID) == True or force:
+    if get_option_autostart(options, OID) or force:
         return RoombaThread(options)
     else:
         return None

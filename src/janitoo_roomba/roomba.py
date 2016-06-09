@@ -57,7 +57,7 @@ assert(COMMAND_DESC[COMMAND_METER] == 'COMMAND_METER')
 assert(COMMAND_DESC[COMMAND_ROOMBA_VACUUM] == 'COMMAND_ROOMBA_VACUUM')
 ##############################################################
 
-from janitoo_roomba.thread import OID
+from janitoo_roomba import OID
 
 def make_vacuum(**kwargs):
     return RoombaVacuum(**kwargs)
@@ -123,7 +123,7 @@ class RoombaVacuum(JNTComponent):
     def __init__(self, bus=None, addr=None, **kwargs):
         """
         """
-        oid = kwargs.pop('oid','%s.vacuum'%OID)
+        oid = kwargs.pop('oid','%s.roowifi'%OID)
         name = kwargs.pop('name', "Roomba Vacuum series")
         product_name = kwargs.pop('product_name', "Roomba Vacuum")
         product_type = kwargs.pop('product_type', "Roowifi")

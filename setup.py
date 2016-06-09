@@ -100,7 +100,7 @@ setup(
             "roomba = janitoo_roomba.thread:make_thread",
         ],
         "janitoo.components": [
-            "roomba.vacuum = janitoo_roomba.roomba:make_vacuum",
+            "roomba.roowifi = janitoo_roomba.roomba:make_roowifi",
         ],
     },
 )

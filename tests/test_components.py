@@ -54,7 +54,7 @@ COMMAND_DISCOVERY = 0x5000
 assert(COMMAND_DESC[COMMAND_DISCOVERY] == 'COMMAND_DISCOVERY')
 ##############################################################
 
-class TestComponentVaccum(JNTTComponent, JNTTComponentCommon):
+class TestComponentRoowifi(JNTTComponent, JNTTComponentCommon):
     """Test the component
     """
-    component_name = "roomba.vacuum"
+    component_name = "roomba.roowifi"
