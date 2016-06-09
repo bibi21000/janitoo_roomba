@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>janitoo_roomba.roomba &mdash; janitoo_roomba 0.0.7 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootswatch-3.3.4/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+    <script type="text/javascript" src="../../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="janitoo_roomba 0.0.7 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../../index.html">
+          janitoo_roomba</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.7</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../../tools/index.html">Tools</a></li>
+                <li><a href="../../api/index.html">Reference</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../../docker.html"> Docker appliance image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#initial-installation">Initial installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#start-the-container">Start the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#performances">Performances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#administer-your-containers">Administer your containers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../using_doc.html"> Using documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../using_doc.html#the-header">The header</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <h1>Source code for janitoo_roomba.roomba</h1><div class="highlight"><pre>
+<span class="c"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;The Roomba Janitoo helper</span>
+<span class="sd">It handle all communications to the Roomba vacuum</span>
+
+
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__license__</span> <span class="o">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">    This file is part of Janitoo.</span>
+
+<span class="s">    Janitoo is free software: you can redistribute it and/or modify</span>
+<span class="s">    it under the terms of the GNU General Public License as published by</span>
+<span class="s">    the Free Software Foundation, either version 3 of the License, or</span>
+<span class="s">    (at your option) any later version.</span>
+
+<span class="s">    Janitoo is distributed in the hope that it will be useful,</span>
+<span class="s">    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+<span class="s">    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+<span class="s">    GNU General Public License for more details.</span>
+
+<span class="s">    You should have received a copy of the GNU General Public License</span>
+<span class="s">    along with Janitoo. If not, see &lt;http://www.gnu.org/licenses/&gt;.</span>
+
+<span class="s">&quot;&quot;&quot;</span>
+<span class="n">__author__</span> <span class="o">=</span> <span class="s">&#39;Sébastien GALLET aka bibi21000&#39;</span>
+<span class="n">__email__</span> <span class="o">=</span> <span class="s">&#39;bibi21000@gmail.com&#39;</span>
+<span class="n">__copyright__</span> <span class="o">=</span> <span class="s">&quot;Copyright © 2013-2014-2015-2016 Sébastien GALLET aka bibi21000&quot;</span>
+
+<span class="c"># Set default logging handler to avoid &quot;No handler found&quot; warnings.</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
+
+<span class="kn">from</span> <span class="nn">janitoo.thread</span> <span class="kn">import</span> <span class="n">JNTBusThread</span>
+<span class="kn">from</span> <span class="nn">janitoo.options</span> <span class="kn">import</span> <span class="n">get_option_autostart</span>
+<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">HADD</span><span class="p">,</span> <span class="n">HADD_SEP</span><span class="p">,</span> <span class="n">json_dumps</span><span class="p">,</span> <span class="n">json_loads</span>
+<span class="kn">from</span> <span class="nn">janitoo.node</span> <span class="kn">import</span> <span class="n">JNTNode</span>
+<span class="kn">from</span> <span class="nn">janitoo.value</span> <span class="kn">import</span> <span class="n">JNTValue</span><span class="p">,</span> <span class="n">value_config_poll</span>
+<span class="kn">from</span> <span class="nn">janitoo.bus</span> <span class="kn">import</span> <span class="n">JNTBus</span>
+<span class="kn">from</span> <span class="nn">janitoo.component</span> <span class="kn">import</span> <span class="n">JNTComponent</span>
+
+<span class="c">##############################################################</span>
+<span class="c">#Check that we are in sync with the official command classes</span>
+<span class="c">#Must be implemented for non-regression</span>
+<span class="kn">from</span> <span class="nn">janitoo.classes</span> <span class="kn">import</span> <span class="n">COMMAND_DESC</span>
+
+<span class="n">COMMAND_METER</span> <span class="o">=</span> <span class="mh">0x0032</span>
+<span class="n">COMMAND_ROOMBA_VACUUM</span> <span class="o">=</span> <span class="mh">0x2000</span>
+
+<span class="k">assert</span><span class="p">(</span><span class="n">COMMAND_DESC</span><span class="p">[</span><span class="n">COMMAND_METER</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;COMMAND_METER&#39;</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">COMMAND_DESC</span><span class="p">[</span><span class="n">COMMAND_ROOMBA_VACUUM</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;COMMAND_ROOMBA_VACUUM&#39;</span><span class="p">)</span>
+<span class="c">##############################################################</span>
+
+<span class="kn">from</span> <span class="nn">janitoo_roomba</span> <span class="kn">import</span> <span class="n">OID</span>
+
+<div class="viewcode-block" id="make_vacuum"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.make_vacuum">[docs]</a><span class="k">def</span> <span class="nf">make_vacuum</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">RoombaVacuum</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</div>
+<span class="n">commands</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;clean&quot;</span><span class="p">:</span><span class="mi">135</span><span class="p">,</span>
+    <span class="s">&quot;dock&quot;</span><span class="p">:</span><span class="mi">143</span><span class="p">,</span>
+    <span class="s">&quot;full&quot;</span><span class="p">:</span><span class="mi">132</span><span class="p">,</span>
+    <span class="s">&quot;max&quot;</span><span class="p">:</span><span class="mi">136</span><span class="p">,</span>
+    <span class="s">&quot;play&quot;</span><span class="p">:</span><span class="mi">141</span><span class="p">,</span>
+    <span class="s">&quot;spot&quot;</span><span class="p">:</span><span class="mi">143</span><span class="p">,</span>
+    <span class="s">&quot;start&quot;</span><span class="p">:</span><span class="mi">128</span><span class="p">,</span>
+    <span class="s">&quot;spot&quot;</span><span class="p">:</span><span class="mi">134</span><span class="p">,</span>
+    <span class="s">&quot;LED_COMMAND&quot;</span><span class="p">:</span><span class="mi">139</span><span class="p">,</span>
+    <span class="s">&quot;SENSOR_COMMAND&quot;</span><span class="p">:</span><span class="mi">142</span><span class="p">,</span>
+    <span class="s">&quot;SENSOR_PACKET_0&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;SENSOR_PACKET_1&quot;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span>
+    <span class="s">&quot;SENSOR_PACKET_2&quot;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span>
+    <span class="s">&quot;SENSOR_PACKET_3&quot;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span>
+    <span class="s">&quot;NUM_BYTES_PACKET_0&quot;</span><span class="p">:</span><span class="mi">26</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="n">sensors</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">&quot;Bumps Wheeldrops&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Wall&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Cliff Left&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Cliff Front Left&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Cliff Front Right&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Cliff Right&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Virtual Wall&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Motor Overcurrents&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Dirt Detector - Left&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Dirt Detector - Right&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Remote Opcode&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Buttons&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Distance&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Angle&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;State&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Voltage&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Current&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Temperature&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Charge&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Capacity&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="s">&quot;Battery-level&quot;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<span class="n">states</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">:</span><span class="s">&quot;Not charging&quot;</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span><span class="s">&quot;Charging Recovery&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span><span class="s">&quot;Charging&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span><span class="s">&quot;Trickle charging&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span><span class="s">&quot;Waiting&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span><span class="s">&quot;Charging Error&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span><span class="s">&quot;Cleaning&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span><span class="s">&quot;Docking&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span><span class="s">&quot;Maximun&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+<div class="viewcode-block" id="RoombaVacuum"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum">[docs]</a><span class="k">class</span> <span class="nc">RoombaVacuum</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;This class abstracts a roowifi and gives attributes for telemetry data,</span>
+<span class="sd">    as well as methods to command the robot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">oid</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;oid&#39;</span><span class="p">,</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">.roowifi&#39;</span><span class="o">%</span><span class="n">OID</span><span class="p">)</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;name&#39;</span><span class="p">,</span> <span class="s">&quot;Roomba Vacuum series&quot;</span><span class="p">)</span>
+        <span class="n">product_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_name&#39;</span><span class="p">,</span> <span class="s">&quot;Roomba Vacuum&quot;</span><span class="p">)</span>
+        <span class="n">product_type</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s">&#39;product_type&#39;</span><span class="p">,</span> <span class="s">&quot;Roowifi&quot;</span><span class="p">)</span>
+        <span class="n">JNTComponent</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">oid</span><span class="p">,</span> <span class="n">bus</span><span class="o">=</span><span class="n">bus</span><span class="p">,</span> <span class="n">addr</span><span class="o">=</span><span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span>
+                <span class="n">product_name</span><span class="o">=</span><span class="n">product_name</span><span class="p">,</span> <span class="n">product_type</span><span class="o">=</span><span class="n">product_type</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - __init__ node uuid:</span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_voltage</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_battery</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_temperature</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">telemetry_ttl</span> <span class="o">=</span> <span class="mi">60</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_last</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_next_run</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;current&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_current&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The dock current&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Current&#39;</span><span class="p">,</span>
+            <span class="n">units</span><span class="o">=</span><span class="s">&#39;mA&#39;</span><span class="p">,</span>
+            <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_current</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;voltage&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_voltage&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The dock voltage&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Voltage&#39;</span><span class="p">,</span>
+            <span class="n">units</span><span class="o">=</span><span class="s">&#39;V&#39;</span><span class="p">,</span>
+            <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_voltage</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;battery_current&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_current&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The current of the battery&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Charge&#39;</span><span class="p">,</span>
+            <span class="n">units</span><span class="o">=</span><span class="s">&#39;mA&#39;</span><span class="p">,</span>
+            <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_battery_charge</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;battery_capacity&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_current&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The capacity of the battery&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Capacity&#39;</span><span class="p">,</span>
+            <span class="n">units</span><span class="o">=</span><span class="s">&#39;mA&#39;</span><span class="p">,</span>
+            <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_battery_capacity</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;battery_charge&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_percent&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The charge of the battery&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Percent&#39;</span><span class="p">,</span>
+            <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_battery_percent</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;ip_ping&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;ip_ping&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Ping the vacuum&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Ping&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="n">help</span><span class="o">=</span><span class="s">&#39;The IP of the vacuum&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;IP&#39;</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;username&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;config_string&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Username to connect the roomba&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Username&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;password&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;config_password&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Password to connect the roomba&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Password&#39;</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;temperature&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_temperature&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The temperature of the roomba&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Temperature&#39;</span><span class="p">,</span>
+            <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_temperature</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;dock&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;sensor_string&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The state of the roomba dock&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Dock&#39;</span><span class="p">,</span>
+            <span class="n">get_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_state</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">poll_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_poll_value</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">poll_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">poll_value</span>
+
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;buttons&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_list&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;The buttons on the roomba&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Buttons&#39;</span><span class="p">,</span>
+            <span class="n">list_items</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;clean&#39;</span><span class="p">,</span> <span class="s">&#39;spot&#39;</span><span class="p">,</span> <span class="s">&#39;dock&#39;</span><span class="p">,</span> <span class="s">&#39;idle&#39;</span><span class="p">],</span>
+            <span class="n">set_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_button</span><span class="p">,</span>
+            <span class="n">is_writeonly</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="n">cmd_class</span> <span class="o">=</span> <span class="n">COMMAND_ROOMBA_VACUUM</span><span class="p">,</span>
+        <span class="p">)</span>
+
+<div class="viewcode-block" id="RoombaVacuum.check_heartbeat"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.check_heartbeat">[docs]</a>    <span class="k">def</span> <span class="nf">check_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check that the component is &#39;available&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c">#~ print &quot;it&#39;s me %s : %s&quot; % (self.values[&#39;upsname&#39;].data, self._ups_stats_last)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_last</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_telemetry"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_telemetry">[docs]</a>    <span class="k">def</span> <span class="nf">get_telemetry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Roomba method which fetches telemetry data about the robot.</span>
+
+<span class="sd">        Other values that can be implemented:</span>
+
+<span class="sd">        - sensors[&#39;Bumps Wheeldrops&#39;] = self.j[&#39;response&#39;][&#39;r0&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Wall&#39;] = self.j[&#39;response&#39;][&#39;r1&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Cliff Left&#39;] = self.j[&#39;response&#39;][&#39;r2&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Cliff Front Left&#39;] = self.j[&#39;response&#39;][&#39;r3&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Cliff Front Right&#39;] = self.j[&#39;response&#39;][&#39;r4&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Cliff Right&#39;] = self.j[&#39;response&#39;][&#39;r5&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Virtual Wall&#39;] = self.j[&#39;response&#39;][&#39;r6&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Motor Overcurrents&#39;] = self.j[&#39;response&#39;][&#39;r7&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Dirt Detector - Left&#39;] = self.j[&#39;response&#39;][&#39;r8&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Dirt Detector - Right&#39;] = self.j[&#39;response&#39;][&#39;r9&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Remote Opcode&#39;] = self.j[&#39;response&#39;][&#39;r10&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Buttons&#39;] = self.j[&#39;response&#39;][&#39;r11&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Distance&#39;] = self.j[&#39;response&#39;][&#39;r12&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Angle&#39;] = self.j[&#39;response&#39;][&#39;r13&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;State&#39;] = State[int(self.j[&#39;response&#39;][&#39;r14&#39;][&#39;value&#39;])]</span>
+<span class="sd">        - sensors[&#39;Voltage&#39;] = self.j[&#39;response&#39;][&#39;r15&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Current&#39;] = self.j[&#39;response&#39;][&#39;r16&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Temperature&#39;] = self.j[&#39;response&#39;][&#39;r17&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Charge&#39;] = self.j[&#39;response&#39;][&#39;r18&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;Capacity&#39;] = self.j[&#39;response&#39;][&#39;r19&#39;][&#39;value&#39;]</span>
+<span class="sd">        - sensors[&#39;battery-level&#39;] =  int(self.j[&#39;response&#39;][&#39;r18&#39;][&#39;value&#39;])*100 / int (self.j[&#39;response&#39;][&#39;r19&#39;][&#39;value&#39;])</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_next_run</span> <span class="o">&lt;</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">():</span>
+            <span class="n">locked</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="bp">False</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">locked</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;http://&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="s">&#39;/roomba.json&#39;</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span> <span class="o">=</span> <span class="n">json_loads</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - retrieve telemetry : </span><span class="si">%s</span><span class="s">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_temperature</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span><span class="p">[</span><span class="s">&#39;response&#39;</span><span class="p">][</span><span class="s">&#39;r17&#39;</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span><span class="p">[</span><span class="s">&#39;response&#39;</span><span class="p">][</span><span class="s">&#39;r18&#39;</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span><span class="p">[</span><span class="s">&#39;response&#39;</span><span class="p">][</span><span class="s">&#39;r19&#39;</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span><span class="p">[</span><span class="s">&#39;response&#39;</span><span class="p">][</span><span class="s">&#39;r14&#39;</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">])</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_voltage</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span><span class="p">[</span><span class="s">&#39;response&#39;</span><span class="p">][</span><span class="s">&#39;r15&#39;</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">])</span><span class="o">/</span><span class="mi">1000</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_current</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_telemetry</span><span class="p">[</span><span class="s">&#39;response&#39;</span><span class="p">][</span><span class="s">&#39;r16&#39;</span><span class="p">][</span><span class="s">&#39;value&#39;</span><span class="p">]),</span><span class="mi">2</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_battery</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="mf">100.0</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="k">except</span> <span class="ne">ZeroDivisionError</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_battery</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_last</span> <span class="o">=</span> <span class="bp">True</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">exception</span><span class="p">(</span><span class="s">&quot;[</span><span class="si">%s</span><span class="s">] - Exception in get_telemetry&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_last</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="k">finally</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;And finally release the lock !!!&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_poll&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_next_run</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_poll&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_battery_charge"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_battery_charge">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the battery</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_battery_capacity"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_battery_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the battery</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_battery_percent"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_battery_percent">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the battery charge</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_battery</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_temperature"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">get_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the temperture</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temperature</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_current"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_current">[docs]</a>    <span class="k">def</span> <span class="nf">get_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the current</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_voltage"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_voltage">[docs]</a>    <span class="k">def</span> <span class="nf">get_voltage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the voltage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voltage</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.get_state"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the dock state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">states</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">]</span>
+        <span class="k">return</span> <span class="s">&quot;Unknown&quot;</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.set_button"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.set_button">[docs]</a>    <span class="k">def</span> <span class="nf">set_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return the dock state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">params</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&quot;clean&quot;</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;exec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&quot;spot&quot;</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;exec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
+        <span class="k">elif</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&quot;dock&quot;</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;exec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">6</span>
+        <span class="k">elif</span> <span class="n">data</span> <span class="o">==</span> <span class="s">&quot;idle&quot;</span><span class="p">:</span>
+            <span class="n">params</span><span class="p">[</span><span class="s">&#39;exec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;http://&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="s">&#39;/rwr.cgi&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="RoombaVacuum.command"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.command">[docs]</a>    <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Other way to acces the roowifi using a simple tcp socket.</span>
+<span class="sd">        A simple copy paste ... does not work</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;Start processing clean Command on </span><span class="si">%s</span><span class="s">  &quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">device</span><span class="p">))</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">ip</span> <span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="mi">132</span><span class="p">))</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="c">#print(&quot;Le code de la fonction est %s  &quot; % table[command])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">table</span><span class="p">[</span><span class="n">command</span><span class="p">]))</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> command Success on </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="n">device</span><span class="p">))</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;clean&quot;</span><span class="p">:</span>
+                <span class="n">sensors</span><span class="p">[</span><span class="s">&#39;State&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">State</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mi">6</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;dock&quot;</span> <span class="p">:</span>
+                <span class="n">sensors</span><span class="p">[</span><span class="s">&#39;State&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">State</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mi">7</span><span class="p">)]</span>
+            <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">command</span><span class="p">)</span> <span class="o">==</span> <span class="s">&quot;max&quot;</span> <span class="p">:</span>
+                <span class="n">sensors</span><span class="p">[</span><span class="s">&#39;State&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">State</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
+            <span class="k">return</span> <span class="bp">True</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot; </span><span class="si">%s</span><span class="s"> Command Failed on </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="n">device</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">False</span></div></div>
+</pre></div>
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014,2015,2016 Sébastien GALLET aka bibi2100 &lt;bibi21000@gmail.com&gt;.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>

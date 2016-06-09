@@ -1,0 +1,30 @@
+janitoo_roomba package
+======================
+
+Submodules
+----------
+
+janitoo_roomba.roomba module
+----------------------------
+
+.. automodule:: janitoo_roomba.roomba
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+janitoo_roomba.thread module
+----------------------------
+
+.. automodule:: janitoo_roomba.thread
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+Module contents
+---------------
+
+.. automodule:: janitoo_roomba
+    :members:
+    :undoc-members:
+    :show-inheritance:

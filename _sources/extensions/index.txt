@@ -1,0 +1,18 @@
+janitoo_roomba package
+======================
+
+Show janitoo's extensions.
+
+Core extensions
+---------------
+
+Threads
+^^^^^^^
+
+ - roomba (janitoo_roomba.roomba:make_thread)
+
+Components
+^^^^^^^^^^
+
+ - roomba.vacuum (janitoo_roomba.roomba:make_vacuum)
+

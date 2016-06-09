@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>janitoo_roomba package &mdash; janitoo_roomba 0.0.7 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/basic.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/sphinxcontrib-images/LightBox2/lightbox2/css/lightbox.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootswatch-3.3.4/united/bootstrap.min.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/bootstrap-sphinx.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.0.7',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/sphinxcontrib-images/LightBox2/lightbox2/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/sphinxcontrib-images/LightBox2/lightbox2/js/lightbox.min.js"></script>
+    <script type="text/javascript" src="../_static/sphinxcontrib-images/LightBox2/lightbox2-customize/jquery-noconflict.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript" src="../_static/js/jquery-fix.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-3.3.4/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../_static/bootstrap-sphinx.js"></script>
+    <link rel="top" title="janitoo_roomba 0.0.7 documentation" href="../index.html" />
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge,chrome=1'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+  </head>
+  <body>
+
+  <div id="navbar" class="navbar navbar-inverse navbar-default navbar-fixed-top">
+    <div class="container">
+      <div class="navbar-header">
+        <!-- .btn-navbar is used as the toggle for collapsed navbar content -->
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="../index.html">
+          janitoo_roomba</a>
+        <span class="navbar-text navbar-version pull-left"><b>0.0.7</b></span>
+      </div>
+
+        <div class="collapse navbar-collapse nav-collapse">
+          <ul class="nav navbar-nav">
+            
+                <li><a href="../tools/index.html">Tools</a></li>
+                <li><a href="#">Reference</a></li>
+            
+            
+              <li class="dropdown globaltoc-container">
+  <a role="button"
+     id="dLabelGlobalToc"
+     data-toggle="dropdown"
+     data-target="#"
+     href="../index.html">Site <b class="caret"></b></a>
+  <ul class="dropdown-menu globaltoc"
+      role="menu"
+      aria-labelledby="dLabelGlobalToc"><ul>
+<li class="toctree-l1"><a class="reference internal" href="../docker.html"> Docker appliance image</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../docker.html#installing-docker">Installing Docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docker.html#initial-installation">Initial installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docker.html#start-the-container">Start the container</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docker.html#performances">Performances</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docker.html#administer-your-containers">Administer your containers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../using_doc.html"> Using documentation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../using_doc.html#the-header">The header</a></li>
+</ul>
+</li>
+</ul>
+</ul>
+</li>
+              
+            
+            
+              
+                
+              
+            
+            
+            
+            
+          </ul>
+
+          
+            
+<form class="navbar-form navbar-right" action="../search.html" method="get">
+ <div class="form-group">
+  <input type="text" name="q" class="form-control" placeholder="Search" />
+ </div>
+  <input type="hidden" name="check_keywords" value="yes" />
+  <input type="hidden" name="area" value="default" />
+</form>
+          
+        </div>
+    </div>
+  </div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 content">
+      
+  <div class="section" id="janitoo-roomba-package">
+<h1>janitoo_roomba package<a class="headerlink" href="#janitoo-roomba-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-janitoo_roomba.roomba">
+<span id="janitoo-roomba-roomba-module"></span><h2>janitoo_roomba.roomba module<a class="headerlink" href="#module-janitoo_roomba.roomba" title="Permalink to this headline">¶</a></h2>
+<p>The Roomba Janitoo helper
+It handle all communications to the Roomba vacuum</p>
+<dl class="class">
+<dt id="janitoo_roomba.roomba.RoombaVacuum">
+<em class="property">class </em><tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">RoombaVacuum</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">janitoo.component.JNTComponent</span></tt></p>
+<p>This class abstracts a roowifi and gives attributes for telemetry data,
+as well as methods to command the robot</p>
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.check_heartbeat">
+<tt class="descname">check_heartbeat</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.check_heartbeat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.check_heartbeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the component is &#8216;available&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.command">
+<tt class="descname">command</tt><big>(</big><em>ip</em>, <em>port</em>, <em>device</em>, <em>command</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Other way to acces the roowifi using a simple tcp socket.
+A simple copy paste ... does not work</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_battery_capacity">
+<tt class="descname">get_battery_capacity</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_battery_capacity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_battery_capacity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the battery</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_battery_charge">
+<tt class="descname">get_battery_charge</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_battery_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_battery_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the battery</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_battery_percent">
+<tt class="descname">get_battery_percent</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_battery_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_battery_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the battery charge</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_current">
+<tt class="descname">get_current</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_current" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_state">
+<tt class="descname">get_state</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_state" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dock state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_telemetry">
+<tt class="descname">get_telemetry</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_telemetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_telemetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Roomba method which fetches telemetry data about the robot.</p>
+<p>Other values that can be implemented:</p>
+<ul class="simple">
+<li>sensors[&#8216;Bumps Wheeldrops&#8217;] = self.j[&#8216;response&#8217;][&#8216;r0&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Wall&#8217;] = self.j[&#8216;response&#8217;][&#8216;r1&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Cliff Left&#8217;] = self.j[&#8216;response&#8217;][&#8216;r2&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Cliff Front Left&#8217;] = self.j[&#8216;response&#8217;][&#8216;r3&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Cliff Front Right&#8217;] = self.j[&#8216;response&#8217;][&#8216;r4&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Cliff Right&#8217;] = self.j[&#8216;response&#8217;][&#8216;r5&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Virtual Wall&#8217;] = self.j[&#8216;response&#8217;][&#8216;r6&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Motor Overcurrents&#8217;] = self.j[&#8216;response&#8217;][&#8216;r7&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Dirt Detector - Left&#8217;] = self.j[&#8216;response&#8217;][&#8216;r8&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Dirt Detector - Right&#8217;] = self.j[&#8216;response&#8217;][&#8216;r9&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Remote Opcode&#8217;] = self.j[&#8216;response&#8217;][&#8216;r10&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Buttons&#8217;] = self.j[&#8216;response&#8217;][&#8216;r11&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Distance&#8217;] = self.j[&#8216;response&#8217;][&#8216;r12&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Angle&#8217;] = self.j[&#8216;response&#8217;][&#8216;r13&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;State&#8217;] = State[int(self.j[&#8216;response&#8217;][&#8216;r14&#8217;][&#8216;value&#8217;])]</li>
+<li>sensors[&#8216;Voltage&#8217;] = self.j[&#8216;response&#8217;][&#8216;r15&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Current&#8217;] = self.j[&#8216;response&#8217;][&#8216;r16&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Temperature&#8217;] = self.j[&#8216;response&#8217;][&#8216;r17&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Charge&#8217;] = self.j[&#8216;response&#8217;][&#8216;r18&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;Capacity&#8217;] = self.j[&#8216;response&#8217;][&#8216;r19&#8217;][&#8216;value&#8217;]</li>
+<li>sensors[&#8216;battery-level&#8217;] =  int(self.j[&#8216;response&#8217;][&#8216;r18&#8217;][&#8216;value&#8217;])*100 / int (self.j[&#8216;response&#8217;][&#8216;r19&#8217;][&#8216;value&#8217;])</li>
+</ul>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_temperature">
+<tt class="descname">get_temperature</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the temperture</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.get_voltage">
+<tt class="descname">get_voltage</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_voltage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_voltage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the voltage</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaVacuum.set_button">
+<tt class="descname">set_button</tt><big>(</big><em>node_uuid</em>, <em>index</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.set_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.set_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dock state</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="janitoo_roomba.roomba.make_vacuum">
+<tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">make_vacuum</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#make_vacuum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.make_vacuum" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-janitoo_roomba.thread">
+<span id="janitoo-roomba-thread-module"></span><h2>janitoo_roomba.thread module<a class="headerlink" href="#module-janitoo_roomba.thread" title="Permalink to this headline">¶</a></h2>
+<p>The Roomba Janitoo helper
+It handle all communications to the Roomba vacuum</p>
+<dl class="class">
+<dt id="janitoo_roomba.thread.RoombaThread">
+<em class="property">class </em><tt class="descclassname">janitoo_roomba.thread.</tt><tt class="descname">RoombaThread</tt><big>(</big><em>options=None</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/thread.html#RoombaThread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.thread.RoombaThread" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">janitoo.thread.JNTBusThread</span></tt></p>
+<p>The Roomba thread</p>
+<dl class="method">
+<dt id="janitoo_roomba.thread.RoombaThread.init_bus">
+<tt class="descname">init_bus</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/thread.html#RoombaThread.init_bus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.thread.RoombaThread.init_bus" title="Permalink to this definition">¶</a></dt>
+<dd><p>Build the bus</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="janitoo_roomba.thread.make_thread">
+<tt class="descclassname">janitoo_roomba.thread.</tt><tt class="descname">make_thread</tt><big>(</big><em>options</em>, <em>force=False</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/thread.html#make_thread"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.thread.make_thread" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-janitoo_roomba">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-janitoo_roomba" title="Permalink to this headline">¶</a></h2>
+</div>
+</div>
+
+
+    </div>
+      
+  </div>
+</div>
+<footer class="footer">
+  <div class="container">
+    <p class="pull-right">
+      <a href="#">Back to top</a>
+      
+    </p>
+    <p>
+        &copy; Copyright 2014,2015,2016 Sébastien GALLET aka bibi2100 &lt;bibi21000@gmail.com&gt;.<br/>
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.2.<br/>
+    </p>
+  </div>
+</footer>
+  </body>
+</html>
