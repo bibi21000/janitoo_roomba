@@ -319,9 +319,10 @@ class RoombaRoowifi(JNTComponent):
                     self._telemetry_last = False
                 finally:
                     self._lock.release()
-                    logger.debug("And finally release the lock !!!")
-                if self.values['ip_ping_poll'].data>0:
-                    self._telemetry_next_run = datetime.now() + timedelta(seconds=self.values['ip_ping_poll'].data)
+                secs = self.values['ip_ping_poll'].data
+                if secs < 0:
+                    secs=60
+                self._telemetry_next_run = datetime.now() + timedelta(seconds=secs)
 
     def get_battery_charge(self, node_uuid, index):
         """Return the battery
