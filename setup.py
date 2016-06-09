@@ -80,6 +80,7 @@ setup(
     url='http://bibi21000.gallet.info/',
     version = janitoo_version,
     zip_safe = False,
+    scripts=['src/scripts/jnt_roomba'],
     packages = find_packages('src', exclude=["scripts", "docs", "config"]),
     package_dir = { '': 'src' },
     include_package_data=True,
