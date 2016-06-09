@@ -37,7 +37,7 @@ import socket
 import time
 from datetime import datetime, timedelta
 
-from janitoo.utils import HADD, json_loads
+from janitoo.utils import json_loads
 from janitoo.component import JNTComponent
 
 ##############################################################
