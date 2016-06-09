@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """The Roomba Janitoo helper
-It handle all communications to the Roomba vacuum
+It handle all communications to the Roomba vacuums
 
 
 
@@ -59,8 +59,8 @@ assert(COMMAND_DESC[COMMAND_ROOMBA_VACUUM] == 'COMMAND_ROOMBA_VACUUM')
 
 from janitoo_roomba import OID
 
-def make_vacuum(**kwargs):
-    return RoombaVacuum(**kwargs)
+def make_roowifi(**kwargs):
+    return RoombaRoowifi(**kwargs)
 
 commands = {
     "clean":135,
@@ -116,7 +116,7 @@ states = {
     8:"Maximun",
     }
 
-class RoombaVacuum(JNTComponent):
+class RoombaRoowifi(JNTComponent):
     """This class abstracts a roowifi and gives attributes for telemetry data,
     as well as methods to command the robot
     """
