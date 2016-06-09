@@ -52,9 +52,11 @@ from janitoo.classes import COMMAND_DESC
 
 COMMAND_METER = 0x0032
 COMMAND_ROOMBA_VACUUM = 0x2000
+COMMAND_ROOMBA_DRIVE = 0x2001
 
 assert(COMMAND_DESC[COMMAND_METER] == 'COMMAND_METER')
 assert(COMMAND_DESC[COMMAND_ROOMBA_VACUUM] == 'COMMAND_ROOMBA_VACUUM')
+assert(COMMAND_DESC[COMMAND_ROOMBA_DRIVE] == 'COMMAND_ROOMBA_DRIVE')
 ##############################################################
 
 from janitoo_roomba import OID
@@ -252,6 +254,19 @@ class RoombaRoowifi(JNTComponent):
             cmd_class = COMMAND_ROOMBA_VACUUM,
         )
 
+        uuid = "drive"
+        self.values[uuid] = self.value_factory['action_list'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='Drive the roomba to a position',
+            label='Drive',
+            list_items=['0', '1', '2', '3', '4', '5', 'dock'],
+            set_data_cb=self.set_drive,
+            is_writeonly = True,
+            cmd_class = COMMAND_ROOMBA_DRIVE,
+        )
+        config_value = self.values[uuid].create_config_value(help='A list of tuples (velocity, radius, time) from dock positions', label='moves',)
+        self.values[config_value.uuid] = config_value
+
     def check_heartbeat(self):
         """Check that the component is 'available'
 
@@ -372,6 +387,11 @@ class RoombaRoowifi(JNTComponent):
         elif data == "idle":
             params['exec'] = 1
         r = requests.get('http://' + self.values['ip_ping_config'].data + '/rwr.cgi', params = params, auth=auth)
+
+    def set_drive(self, node_uuid, index, data):
+        """Drive the robot
+        """
+        pass
 
     def command(self, ip, port, device, command):
         """Other way to acces the roowifi using a simple tcp socket.
