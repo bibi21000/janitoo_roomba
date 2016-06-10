@@ -77,6 +77,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../docker.html#initial-installation">Initial installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../docker.html#start-the-container">Start the container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../docker.html#querying">Querying</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../docker.html#performances">Performances</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../docker.html#administer-your-containers">Administer your containers</a></li>
 </ul>
@@ -121,7 +122,7 @@
   <h1>Source code for janitoo_roomba.roomba</h1><div class="highlight"><pre>
 <span class="c"># -*- coding: utf-8 -*-</span>
 <span class="sd">&quot;&quot;&quot;The Roomba Janitoo helper</span>
-<span class="sd">It handle all communications to the Roomba vacuum</span>
+<span class="sd">It handle all communications to the Roomba vacuums</span>
 
 
 
@@ -151,19 +152,14 @@
 <span class="c"># Set default logging handler to avoid &quot;No handler found&quot; warnings.</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
-<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">sys</span>
+
 <span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">requests</span>
 <span class="kn">import</span> <span class="nn">socket</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span><span class="p">,</span> <span class="n">timedelta</span>
 
-<span class="kn">from</span> <span class="nn">janitoo.thread</span> <span class="kn">import</span> <span class="n">JNTBusThread</span>
-<span class="kn">from</span> <span class="nn">janitoo.options</span> <span class="kn">import</span> <span class="n">get_option_autostart</span>
-<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">HADD</span><span class="p">,</span> <span class="n">HADD_SEP</span><span class="p">,</span> <span class="n">json_dumps</span><span class="p">,</span> <span class="n">json_loads</span>
-<span class="kn">from</span> <span class="nn">janitoo.node</span> <span class="kn">import</span> <span class="n">JNTNode</span>
-<span class="kn">from</span> <span class="nn">janitoo.value</span> <span class="kn">import</span> <span class="n">JNTValue</span><span class="p">,</span> <span class="n">value_config_poll</span>
-<span class="kn">from</span> <span class="nn">janitoo.bus</span> <span class="kn">import</span> <span class="n">JNTBus</span>
+<span class="kn">from</span> <span class="nn">janitoo.utils</span> <span class="kn">import</span> <span class="n">json_loads</span>
 <span class="kn">from</span> <span class="nn">janitoo.component</span> <span class="kn">import</span> <span class="n">JNTComponent</span>
 
 <span class="c">##############################################################</span>
@@ -173,15 +169,17 @@
 
 <span class="n">COMMAND_METER</span> <span class="o">=</span> <span class="mh">0x0032</span>
 <span class="n">COMMAND_ROOMBA_VACUUM</span> <span class="o">=</span> <span class="mh">0x2000</span>
+<span class="n">COMMAND_ROOMBA_DRIVE</span> <span class="o">=</span> <span class="mh">0x2001</span>
 
 <span class="k">assert</span><span class="p">(</span><span class="n">COMMAND_DESC</span><span class="p">[</span><span class="n">COMMAND_METER</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;COMMAND_METER&#39;</span><span class="p">)</span>
 <span class="k">assert</span><span class="p">(</span><span class="n">COMMAND_DESC</span><span class="p">[</span><span class="n">COMMAND_ROOMBA_VACUUM</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;COMMAND_ROOMBA_VACUUM&#39;</span><span class="p">)</span>
+<span class="k">assert</span><span class="p">(</span><span class="n">COMMAND_DESC</span><span class="p">[</span><span class="n">COMMAND_ROOMBA_DRIVE</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;COMMAND_ROOMBA_DRIVE&#39;</span><span class="p">)</span>
 <span class="c">##############################################################</span>
 
 <span class="kn">from</span> <span class="nn">janitoo_roomba</span> <span class="kn">import</span> <span class="n">OID</span>
 
-<div class="viewcode-block" id="make_vacuum"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.make_vacuum">[docs]</a><span class="k">def</span> <span class="nf">make_vacuum</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">RoombaVacuum</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<div class="viewcode-block" id="make_roowifi"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.make_roowifi">[docs]</a><span class="k">def</span> <span class="nf">make_roowifi</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">RoombaRoowifi</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 </div>
 <span class="n">commands</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s">&quot;clean&quot;</span><span class="p">:</span><span class="mi">135</span><span class="p">,</span>
@@ -189,7 +187,6 @@
     <span class="s">&quot;full&quot;</span><span class="p">:</span><span class="mi">132</span><span class="p">,</span>
     <span class="s">&quot;max&quot;</span><span class="p">:</span><span class="mi">136</span><span class="p">,</span>
     <span class="s">&quot;play&quot;</span><span class="p">:</span><span class="mi">141</span><span class="p">,</span>
-    <span class="s">&quot;spot&quot;</span><span class="p">:</span><span class="mi">143</span><span class="p">,</span>
     <span class="s">&quot;start&quot;</span><span class="p">:</span><span class="mi">128</span><span class="p">,</span>
     <span class="s">&quot;spot&quot;</span><span class="p">:</span><span class="mi">134</span><span class="p">,</span>
     <span class="s">&quot;LED_COMMAND&quot;</span><span class="p">:</span><span class="mi">139</span><span class="p">,</span>
@@ -237,7 +234,7 @@
     <span class="mi">8</span><span class="p">:</span><span class="s">&quot;Maximun&quot;</span><span class="p">,</span>
     <span class="p">}</span>
 
-<div class="viewcode-block" id="RoombaVacuum"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum">[docs]</a><span class="k">class</span> <span class="nc">RoombaVacuum</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi">[docs]</a><span class="k">class</span> <span class="nc">RoombaRoowifi</span><span class="p">(</span><span class="n">JNTComponent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;This class abstracts a roowifi and gives attributes for telemetry data,</span>
 <span class="sd">    as well as methods to command the robot</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -373,14 +370,27 @@
             <span class="n">cmd_class</span> <span class="o">=</span> <span class="n">COMMAND_ROOMBA_VACUUM</span><span class="p">,</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="RoombaVacuum.check_heartbeat"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.check_heartbeat">[docs]</a>    <span class="k">def</span> <span class="nf">check_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">uuid</span> <span class="o">=</span> <span class="s">&quot;drive&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">value_factory</span><span class="p">[</span><span class="s">&#39;action_list&#39;</span><span class="p">](</span><span class="n">options</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="n">uuid</span><span class="o">=</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">node_uuid</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">uuid</span><span class="p">,</span>
+            <span class="n">help</span><span class="o">=</span><span class="s">&#39;Drive the roomba to a position&#39;</span><span class="p">,</span>
+            <span class="n">label</span><span class="o">=</span><span class="s">&#39;Drive&#39;</span><span class="p">,</span>
+            <span class="n">list_items</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;0&#39;</span><span class="p">,</span> <span class="s">&#39;1&#39;</span><span class="p">,</span> <span class="s">&#39;2&#39;</span><span class="p">,</span> <span class="s">&#39;3&#39;</span><span class="p">,</span> <span class="s">&#39;4&#39;</span><span class="p">,</span> <span class="s">&#39;5&#39;</span><span class="p">,</span> <span class="s">&#39;dock&#39;</span><span class="p">],</span>
+            <span class="n">set_data_cb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">set_drive</span><span class="p">,</span>
+            <span class="n">is_writeonly</span> <span class="o">=</span> <span class="bp">True</span><span class="p">,</span>
+            <span class="n">cmd_class</span> <span class="o">=</span> <span class="n">COMMAND_ROOMBA_DRIVE</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">config_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">uuid</span><span class="p">]</span><span class="o">.</span><span class="n">create_config_value</span><span class="p">(</span><span class="n">help</span><span class="o">=</span><span class="s">&#39;A list of tuples (velocity, radius, time) from dock positions&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;moves&#39;</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="n">config_value</span><span class="o">.</span><span class="n">uuid</span><span class="p">]</span> <span class="o">=</span> <span class="n">config_value</span>
+
+<div class="viewcode-block" id="RoombaRoowifi.check_heartbeat"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.check_heartbeat">[docs]</a>    <span class="k">def</span> <span class="nf">check_heartbeat</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Check that the component is &#39;available&#39;</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c">#~ print &quot;it&#39;s me %s : %s&quot; % (self.values[&#39;upsname&#39;].data, self._ups_stats_last)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_last</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_telemetry"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_telemetry">[docs]</a>    <span class="k">def</span> <span class="nf">get_telemetry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_telemetry"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_telemetry">[docs]</a>    <span class="k">def</span> <span class="nf">get_telemetry</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Roomba method which fetches telemetry data about the robot.</span>
 
 <span class="sd">        Other values that can be implemented:</span>
@@ -431,47 +441,48 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_last</span> <span class="o">=</span> <span class="bp">False</span>
                 <span class="k">finally</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_lock</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
-                    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&quot;And finally release the lock !!!&quot;</span><span class="p">)</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_poll&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_next_run</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_poll&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+                <span class="n">secs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_poll&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span>
+                <span class="k">if</span> <span class="n">secs</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">secs</span><span class="o">=</span><span class="mi">60</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_telemetry_next_run</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="n">secs</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_battery_charge"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_battery_charge">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_battery_charge"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_battery_charge">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the battery</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_battery_capacity"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_battery_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_battery_capacity"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_battery_capacity">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_capacity</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the battery</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_capacity</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_battery_percent"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_battery_percent">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_battery_percent"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_battery_percent">[docs]</a>    <span class="k">def</span> <span class="nf">get_battery_percent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the battery charge</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_battery</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_temperature"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">get_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_temperature"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_temperature">[docs]</a>    <span class="k">def</span> <span class="nf">get_temperature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the temperture</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_temperature</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_current"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_current">[docs]</a>    <span class="k">def</span> <span class="nf">get_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_current"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_current">[docs]</a>    <span class="k">def</span> <span class="nf">get_current</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the current</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_current</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_voltage"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_voltage">[docs]</a>    <span class="k">def</span> <span class="nf">get_voltage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_voltage"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_voltage">[docs]</a>    <span class="k">def</span> <span class="nf">get_voltage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the voltage</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_voltage</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.get_state"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.get_state"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.get_state">[docs]</a>    <span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the dock state</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">get_telemetry</span><span class="p">()</span>
@@ -479,7 +490,7 @@
             <span class="k">return</span> <span class="n">states</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_state</span><span class="p">]</span>
         <span class="k">return</span> <span class="s">&quot;Unknown&quot;</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.set_button"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.set_button">[docs]</a>    <span class="k">def</span> <span class="nf">set_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.set_button"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.set_button">[docs]</a>    <span class="k">def</span> <span class="nf">set_button</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Return the dock state</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">auth</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;username&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;password&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -494,7 +505,12 @@
             <span class="n">params</span><span class="p">[</span><span class="s">&#39;exec&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;http://&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="s">&#39;ip_ping_config&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">data</span> <span class="o">+</span> <span class="s">&#39;/rwr.cgi&#39;</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">params</span><span class="p">,</span> <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="RoombaVacuum.command"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaVacuum.command">[docs]</a>    <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+<div class="viewcode-block" id="RoombaRoowifi.set_drive"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.set_drive">[docs]</a>    <span class="k">def</span> <span class="nf">set_drive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">node_uuid</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Drive the robot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span>
+</div>
+<div class="viewcode-block" id="RoombaRoowifi.command"><a class="viewcode-back" href="../../api/index.html#janitoo_roomba.roomba.RoombaRoowifi.command">[docs]</a>    <span class="k">def</span> <span class="nf">command</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Other way to acces the roowifi using a simple tcp socket.</span>
 <span class="sd">        A simple copy paste ... does not work</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -519,7 +535,7 @@
                 <span class="n">sensors</span><span class="p">[</span><span class="s">&#39;State&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">State</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mi">8</span><span class="p">)]</span>
             <span class="k">return</span> <span class="bp">True</span>
         <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot; </span><span class="si">%s</span><span class="s"> Command Failed on </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="n">device</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_log</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s">&quot;</span><span class="si">%s</span><span class="s"> Command Failed on </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">command</span><span class="p">,</span><span class="n">device</span><span class="p">))</span>
             <span class="k">return</span> <span class="bp">False</span></div></div>
 </pre></div>
 

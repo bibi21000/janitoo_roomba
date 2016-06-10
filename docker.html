@@ -78,6 +78,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#initial-installation">Initial installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#start-the-container">Start the container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#querying">Querying</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#performances">Performances</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#administer-your-containers">Administer your containers</a></li>
 </ul>
@@ -140,11 +141,11 @@
 </pre></div>
 </div>
 <p>Create a &#8216;store&#8217; container  :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker create -v /root/.ssh/ -v /opt/janitoo/etc/ --name hostsensor_store bibi21000/janitoo_roomba /bin/true
+<div class="code bash highlight-python"><div class="highlight"><pre>$ docker create -v /root/.ssh/ -v /opt/janitoo/etc/ --name roomba_store bibi21000/janitoo_roomba /bin/true
 </pre></div>
 </div>
 <p>Create a &#8216;running&#8217; container :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker create --volumes-from hostsensor_store -p 8882:22 --name hostsensor_running bibi21000/janitoo_roomba
+<div class="code bash highlight-python"><div class="highlight"><pre>$ docker create --volumes-from roomba_store -p 8885:22 --name roomba_running bibi21000/janitoo_roomba
 </pre></div>
 </div>
 <p>Yous should now have 2 created containers :</p>
@@ -152,27 +153,27 @@
 </pre></div>
 </div>
 <div class="code bash highlight-python"><div class="highlight"><pre>CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS      PORTS       NAMES
-888a3279e971        bibi21000/janitoo_roomba   &quot;/root/auto.sh&quot;     29 seconds ago      Created                 hostsensor_running
-02479e7eeea1        bibi21000/janitoo_roomba   &quot;/bin/true&quot;         42 seconds ago      Created                 hostsensor_store
+a6459f44a4d9        bibi21000/janitoo_roomba   &quot;/root/auto.sh&quot;     29 seconds ago      Created                 roomba_running
+02479e7eeea1        bibi21000/janitoo_roomba   &quot;/bin/true&quot;         42 seconds ago      Created                 roomba_store
 </pre></div>
 </div>
 </div>
 <div class="section" id="start-the-container">
 <h2>Start the container<a class="headerlink" href="#start-the-container" title="Permalink to this headline">¶</a></h2>
 <p>Start it :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker start hostsensor_running
+<div class="code bash highlight-python"><div class="highlight"><pre>$ docker start roomba_running
 </pre></div>
 </div>
 <p>Check that is running :</p>
 <div class="code bash highlight-python"><div class="highlight"><pre>$ docker ps
 </pre></div>
 </div>
-<div class="code bash highlight-python"><div class="highlight"><pre>CONTAINER ID        IMAGE                          COMMAND             CREATED              STATUS          PORTS                  NAMES
-cc1a58b59f7c        bibi21000/janitoo_roomba   &quot;/root/auto.sh&quot;     About a minute ago   Up 8 seconds    0.0.0.0:8882-&gt;22/tcp   hostsensor_running
+<div class="code bash highlight-python"><div class="highlight"><pre>CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS              PORTS                  NAMES
+a6459f44a4d9        bibi21000/janitoo_roomba       &quot;/root/auto.sh&quot;     30 seconds ago      Up 6 seconds        0.0.0.0:8885-&gt;22/tcp   roomba_running
 </pre></div>
 </div>
 <p>And stop it :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker stop hostsensor_running
+<div class="code bash highlight-python"><div class="highlight"><pre>$ docker stop roomba_running
 </pre></div>
 </div>
 </div>
@@ -182,8 +183,8 @@ cc1a58b59f7c        bibi21000/janitoo_roomba   &quot;/root/auto.sh&quot;     Abo
 <p>This configuration is saved in the &#8216;store&#8217; container.</p>
 <div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
-<p>Update the hostsensor configuration file :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ ssh root@127.0.0.1 -p 8882
+<p>Update the roomba configuration file :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ ssh root@127.0.0.1 -p 8885
 </pre></div>
 </div>
 <p>Default password is janitoo. You can change it but it will be restored on the next running container update. Prefer the key solutions.</p>
@@ -196,78 +197,86 @@ cc1a58b59f7c        bibi21000/janitoo_roomba   &quot;/root/auto.sh&quot;     Abo
 </pre></div>
 </div>
 <p>If you plan to install more than one janitoo_roomba image on your network, you must change the hadd of the bus and components :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">hadd</span> <span class="o">=</span> <span class="mo">0121</span><span class="o">/</span><span class="mo">0000</span>
+<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">hadd</span> <span class="o">=</span> <span class="mo">0051</span><span class="o">/</span><span class="mo">0000</span>
 </pre></div>
 </div>
 <p>to</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">hadd</span> <span class="o">=</span> <span class="mo">0122</span><span class="o">/</span><span class="mo">0000</span>
+<div class="code bash highlight-python"><div class="highlight"><pre><span class="n">hadd</span> <span class="o">=</span> <span class="mo">0052</span><span class="o">/</span><span class="mo">0000</span>
 </pre></div>
 </div>
-<p>And so on for 0121/0001, 0121/0002, ... Keep in mind that hadd must be unique on your network.</p>
-<p>Save your updates and restart jnt_hostsensor :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>root@8eafc45f6d09:~# killall jnt_hostsensor
-</pre></div>
-</div>
-</div>
-<div class="section" id="disks">
-<h3>Disks<a class="headerlink" href="#disks" title="Permalink to this headline">¶</a></h3>
-<p>The configuration is autogenerated on first startup (if empty). You can clean it but don&#8217;t remove erverything ou remove the component from bus configuration.</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>[hostsensor__disks]
-heartbeat = 60
-name = Disks
-location = Docker
-hadd = 0121/0002
-partition_config_0 = /root/.ssh
-total_config_0 = /root/.ssh
-used_config_0 = /root/.ssh
-free_config_0 = /root/.ssh
-percent_use_config_0 = /root/.ssh
+<p>And so on for 0051/0001, ... Keep in mind that hadd must be unique on your network.</p>
+<p>Save your updates and restart jnt_roomba :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>root@8eafc45f6d09:~# killall jnt_roomba
 </pre></div>
 </div>
 </div>
-<div class="section" id="sensors">
-<h3>Sensors<a class="headerlink" href="#sensors" title="Permalink to this headline">¶</a></h3>
-<p>Connect via ssh to the docker appliance and run the following command :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>root@11ec5283ffbd:~# sensors
+<div class="section" id="vaccums">
+<h3>Vaccums<a class="headerlink" href="#vaccums" title="Permalink to this headline">¶</a></h3>
+<p>Update the configuration according to your installation :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>[roomba__roomba1]
+heartbeat = 30
+name = Roomba 765
+location = Home
+hadd = 0051/0001
+ip_ping_config_0 = 192.168.14.64
+username_0 = admin
+password_0 = roombawifi
 </pre></div>
 </div>
-<p>It will detect the sensors :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>acpitz-virtual-0
-Adapter: Virtual device
-temp1:        +48.0 C  (crit = +105.0 C)
-
-fam15h_power-pci-00c4
-Adapter: PCI adapter
-power1:        0.00 W  (crit =  24.99 W)
-
-k10temp-pci-00c3
-Adapter: PCI adapter
-temp1:        +47.8 C  (high = +70.0 C)
-                       (crit = +100.0 C, hyst = +99.0 C)
+</div>
+</div>
+<div class="section" id="querying">
+<h2>Querying<a class="headerlink" href="#querying" title="Permalink to this headline">¶</a></h2>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query node --hadd 0051/0001 --vuuid request_info_users
 </pre></div>
 </div>
-<p>There is 2 temperature with the same name, update your sensor configuration <a class="reference external" href="http://www.lm-sensors.org/">http://www.lm-sensors.org/</a> if you want to monitor both.</p>
-<p>Open the configuration file using your favorite editor :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>root@8eafc45f6d09:~# vim /opt/janitoo/etc/janitoo_roomba.conf
+<div class="code bash highlight-python"><div class="highlight"><pre>request_info_users
+----------
+hadd       uuid                           idx  data                      units      type  genre cmdclass help
+0051/0001  ip_ping                        0    1                         None       1     2     48       Ping the vacuum
+0051/0001  temperature                    0    33.0                      °C         3     2     49       The temperature of the roomba
+0051/0001  battery_current                0    2918.0                    mA         3     2     49       The current of the battery
+0051/0001  current                        0    63.0                      mA         3     2     49       The dock current
+0051/0001  drive                          0    None                      None       5     2     8193     Drive the roomba to a position
+0051/0001  battery_capacity               0    2918.0                    mA         3     2     49       The capacity of the battery
+0051/0001  buttons                        0    None                      None       5     2     8192     The buttons on the roomba
+0051/0001  dock                           0    Trickle charging          None       8     2     49       The state of the roomba dock
+0051/0001  voltage                        0    16.61                     V          3     2     49       The dock voltage
+0051/0001  battery_charge                 0    100.0                     %          3     2     49       The charge of the battery
 </pre></div>
 </div>
-<p>Add a component to the bus configuration :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">hostsensor</span><span class="p">]</span>
-<span class="o">...</span>
-<span class="n">components</span><span class="o">.</span><span class="n">lmsensor</span> <span class="o">=</span> <span class="n">hostsensor</span><span class="o">.</span><span class="n">lmsensor</span>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query node --hadd 0051/0001 --vuuid request_info_configs
 </pre></div>
 </div>
-<p>Add a configuration for the component :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre><span class="p">[</span><span class="n">hostsensor__lmsensor</span><span class="p">]</span>
-<span class="n">heartbeat</span> <span class="o">=</span> <span class="mi">20</span>
-<span class="n">name</span> <span class="o">=</span> <span class="n">lm</span><span class="o">-</span><span class="n">sensors</span>
-<span class="n">location</span> <span class="o">=</span> <span class="n">Docker</span>
-<span class="n">hadd</span> <span class="o">=</span> <span class="mo">0121</span><span class="o">/</span><span class="mo">0004</span>
-<span class="n">temperature_config_0</span> <span class="o">=</span> <span class="n">temp1</span>
+<div class="code bash highlight-python"><div class="highlight"><pre>request_info_configs
+----------
+hadd       uuid                           idx  data                      units      type  genre cmdclass help
+0051/0000  location                       0    testroombalocation        None       8     3     112      The location of the node
+0051/0000  name                           0    testroombaname            None       8     3     112      The name of the node
+0051/0001  username                       0    admin                     None       8     3     112      Username to connect the roomba
+0051/0001  temperature_poll               0    60                        seconds    4     3     112      The poll delay of the value
+0051/0001  battery_current_poll           0    60                        seconds    4     3     112      The poll delay of the value
+0051/0001  name                           0    testroomba1name           None       8     3     112      The name of the node
+0051/0001  battery_charge_poll            0    60                        seconds    4     3     112      The poll delay of the value
+0051/0001  drive_config                   0    None                      None       2     3     112      A list of tuples (velocity, radius, time) from dock positions
+0051/0001  voltage_poll                   0    60                        seconds    4     3     112      The poll delay of the value
+0051/0001  location                       0    testroombalocation        None       8     3     112      The location of the node
+0051/0001  ip_ping_poll                   0    60                        seconds    4     3     112      The poll delay of the value
+0051/0001  battery_capacity_poll          0    60                        seconds    4     3     112      The poll delay of the value
+0051/0001  dock_poll                      0    60                        seconds    4     3     112      The poll delay of the value
+0051/0001  ip_ping_config                 0    192.168.14.64             None       33    3     112      The IP of the vacuum
+0051/0001  password                       0    roombawifi                None       20    3     112      Password to connect the roomba
+0051/0001  current_poll                   0    60                        seconds    4     3     112      The poll delay of the value
 </pre></div>
 </div>
-<p>temperature_config_0 should be the name &#8216;detected&#8217; in the steps below : temp1</p>
-<p>Save and restart your server to apply.</p>
+<p>It&#8217;s time to clean :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query query --hadd 0051/0001 --uuid buttons --genre user --cmd_class 8192 --is_writeonly True --data clean
+</pre></div>
+</div>
+<p>And go back to dock :</p>
+<div class="code bash highlight-python"><div class="highlight"><pre>$ jnt_query query --hadd 0051/0001 --uuid buttons --genre user --cmd_class 8192 --is_writeonly True --data clean
+$ jnt_query query --hadd 0051/0001 --uuid buttons --genre user --cmd_class 8192 --is_writeonly True --data dock
+</pre></div>
 </div>
 </div>
 <div class="section" id="performances">
@@ -276,21 +285,21 @@ temp1:        +47.8 C  (high = +70.0 C)
 <div class="code bash highlight-python"><div class="highlight"><pre>root@7de7e4993b13:~# top
 </pre></div>
 </div>
-<div class="code bash highlight-python"><div class="highlight"><pre>top - 19:08:40 up 10 days, 46 min,  1 user,  load average: 0.34, 0.50, 0.58
+<div class="code bash highlight-python"><div class="highlight"><pre>top - 18:10:48 up 17 days, 23:48,  1 user,  load average: 0.19, 0.29, 0.44
 Tasks:   8 total,   1 running,   7 sleeping,   0 stopped,   0 zombie
-%Cpu(s):  7.3 us,  3.9 sy,  0.0 ni, 88.5 id,  0.0 wa,  0.0 hi,  0.3 si,  0.0 st
-KiB Mem:  11661364 total, 11257872 used,   403492 free,   586084 buffers
-KiB Swap: 19530748 total,   301772 used, 19228976 free.  4392228 cached Mem
+%Cpu(s):  5.0 us,  1.4 sy,  0.0 ni, 93.1 id,  0.5 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem:  11661364 total,  9691100 used,  1970264 free,   786036 buffers
+KiB Swap: 19530748 total,   503648 used, 19027100 free.  2752660 cached Mem
 
   PID USER      PR  NI    VIRT    RES    SHR S  %CPU %MEM     TIME+ COMMAND
-   42 root      20   0  489236  23464   4480 S   3.0  0.2   1:01.15 /usr/local/bin/python /usr/local/bin/jnt_hostsensor -c /etc/janitoo/janitoo_roomba+
-   55 root      20   0   21940   1424   1048 R   0.3  0.0   0:00.25 top
-    1 root      20   0   21740   1600   1328 S   0.0  0.0   0:00.04 /bin/bash /root/auto.sh
-   10 root      20   0   55508  10176   1412 S   0.0  0.1   0:00.25 /usr/bin/python /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
-   11 root      39  19   23500   1492   1200 S   0.0  0.0   0:00.45 top -b
-   13 root      20   0   55176   3112   2444 S   0.0  0.0   0:00.02 /usr/sbin/sshd -D
-   32 root      20   0   82716   3936   3076 S   0.0  0.0   0:00.15 sshd: root@pts/0
-   34 root      20   0   20244   2056   1568 S   0.0  0.0   0:00.03 -bash
+   13 root      20   0  487452  24556   4368 S   0.6  0.2   1:38.65 /usr/local/bin/python /usr/local/bin/jnt_roomba -c /etc/janitoo/janitoo_roomba.conf front
+  147 root      20   0   21932   1392   1016 R   0.6  0.0   0:00.01 top
+    1 root      20   0   21732   1580   1312 S   0.0  0.0   0:00.03 /bin/bash /root/auto.sh
+   10 root      20   0   55496  10052   1328 S   0.0  0.1   0:02.75 /usr/bin/python /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+   11 root      39  19   23492   1468   1176 S   0.0  0.0   0:04.63 top -b
+   12 root      20   0   55160   3112   2444 S   0.0  0.0   0:00.02 /usr/sbin/sshd -D
+  141 root      20   0   82696   3948   3100 S   0.0  0.0   0:00.05 sshd: root@pts/0
+  143 root      20   0   20236   1880   1464 S   0.0  0.0   0:00.01 -bash
 </pre></div>
 </div>
 </div>

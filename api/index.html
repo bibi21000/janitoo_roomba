@@ -76,6 +76,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../docker.html#initial-installation">Initial installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docker.html#start-the-container">Start the container</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docker.html#customize-your-installation">Customize your installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../docker.html#querying">Querying</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docker.html#performances">Performances</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../docker.html#administer-your-containers">Administer your containers</a></li>
 </ul>
@@ -125,59 +126,59 @@
 <div class="section" id="module-janitoo_roomba.roomba">
 <span id="janitoo-roomba-roomba-module"></span><h2>janitoo_roomba.roomba module<a class="headerlink" href="#module-janitoo_roomba.roomba" title="Permalink to this headline">¶</a></h2>
 <p>The Roomba Janitoo helper
-It handle all communications to the Roomba vacuum</p>
+It handle all communications to the Roomba vacuums</p>
 <dl class="class">
-<dt id="janitoo_roomba.roomba.RoombaVacuum">
-<em class="property">class </em><tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">RoombaVacuum</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi">
+<em class="property">class </em><tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">RoombaRoowifi</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">janitoo.component.JNTComponent</span></tt></p>
 <p>This class abstracts a roowifi and gives attributes for telemetry data,
 as well as methods to command the robot</p>
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.check_heartbeat">
-<tt class="descname">check_heartbeat</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.check_heartbeat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.check_heartbeat" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.check_heartbeat">
+<tt class="descname">check_heartbeat</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.check_heartbeat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.check_heartbeat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that the component is &#8216;available&#8217;</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.command">
-<tt class="descname">command</tt><big>(</big><em>ip</em>, <em>port</em>, <em>device</em>, <em>command</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.command" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.command">
+<tt class="descname">command</tt><big>(</big><em>ip</em>, <em>port</em>, <em>device</em>, <em>command</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Other way to acces the roowifi using a simple tcp socket.
 A simple copy paste ... does not work</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_battery_capacity">
-<tt class="descname">get_battery_capacity</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_battery_capacity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_battery_capacity" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_battery_capacity">
+<tt class="descname">get_battery_capacity</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_battery_capacity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_battery_capacity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the battery</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_battery_charge">
-<tt class="descname">get_battery_charge</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_battery_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_battery_charge" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_battery_charge">
+<tt class="descname">get_battery_charge</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_battery_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_battery_charge" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the battery</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_battery_percent">
-<tt class="descname">get_battery_percent</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_battery_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_battery_percent" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_battery_percent">
+<tt class="descname">get_battery_percent</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_battery_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_battery_percent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the battery charge</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_current">
-<tt class="descname">get_current</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_current" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_current">
+<tt class="descname">get_current</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_current"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_current" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the current</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_state">
-<tt class="descname">get_state</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_state" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_state">
+<tt class="descname">get_state</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dock state</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_telemetry">
-<tt class="descname">get_telemetry</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_telemetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_telemetry" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_telemetry">
+<tt class="descname">get_telemetry</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_telemetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_telemetry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Roomba method which fetches telemetry data about the robot.</p>
 <p>Other values that can be implemented:</p>
 <ul class="simple">
@@ -206,28 +207,34 @@ A simple copy paste ... does not work</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_temperature">
-<tt class="descname">get_temperature</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_temperature" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_temperature">
+<tt class="descname">get_temperature</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_temperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the temperture</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.get_voltage">
-<tt class="descname">get_voltage</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.get_voltage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.get_voltage" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.get_voltage">
+<tt class="descname">get_voltage</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.get_voltage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.get_voltage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the voltage</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="janitoo_roomba.roomba.RoombaVacuum.set_button">
-<tt class="descname">set_button</tt><big>(</big><em>node_uuid</em>, <em>index</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaVacuum.set_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaVacuum.set_button" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.set_button">
+<tt class="descname">set_button</tt><big>(</big><em>node_uuid</em>, <em>index</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.set_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.set_button" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the dock state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.RoombaRoowifi.set_drive">
+<tt class="descname">set_drive</tt><big>(</big><em>node_uuid</em>, <em>index</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.set_drive"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.set_drive" title="Permalink to this definition">¶</a></dt>
+<dd><p>Drive the robot</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="function">
-<dt id="janitoo_roomba.roomba.make_vacuum">
-<tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">make_vacuum</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#make_vacuum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.make_vacuum" title="Permalink to this definition">¶</a></dt>
+<dt id="janitoo_roomba.roomba.make_roowifi">
+<tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">make_roowifi</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#make_roowifi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.make_roowifi" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
