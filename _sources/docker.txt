@@ -15,23 +15,17 @@ Install docker using the following documentation https://docs.docker.com/engine/
 Initial installation
 ====================
 
-Pull the image :
-
-.. code:: bash
-
-    $ docker pull bibi21000/janitoo_roomba
-
 Create a 'store' container  :
 
 .. code:: bash
 
-    $ docker create -v /root/.ssh/ -v /opt/janitoo/etc/ --name roomba_store bibi21000/janitoo_roomba /bin/true
+    $ make docker-local-store
 
 Create a 'running' container :
 
 .. code:: bash
 
-    $ docker create --volumes-from roomba_store -p 8885:22 --name roomba_running bibi21000/janitoo_roomba
+    $ make docker-local-running
 
 Yous should now have 2 created containers :
 
@@ -64,7 +58,7 @@ Check that is running :
 .. code:: bash
 
     CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS              PORTS                  NAMES
-    a6459f44a4d9        bibi21000/janitoo_roomba       "/root/auto.sh"     30 seconds ago      Up 6 seconds        0.0.0.0:8885->22/tcp   roomba_running
+    a6459f44a4d9        bibi21000/janitoo_roomba       "/root/auto.sh"     30 seconds ago      Up 6 seconds        0.0.0.0:8882->22/tcp   roomba_running
 
 And stop it :
 
@@ -87,7 +81,7 @@ Update the roomba configuration file :
 
 .. code:: bash
 
-    $ ssh root@127.0.0.1 -p 8885
+    $ ssh root@127.0.0.1 -p 8882
 
 Default password is janitoo. You can change it but it will be restored on the next running container update. Prefer the key solutions.
 

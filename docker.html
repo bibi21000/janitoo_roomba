@@ -136,16 +136,12 @@
 </div>
 <div class="section" id="initial-installation">
 <h2>Initial installation<a class="headerlink" href="#initial-installation" title="Permalink to this headline">¶</a></h2>
-<p>Pull the image :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker pull bibi21000/janitoo_roomba
-</pre></div>
-</div>
 <p>Create a &#8216;store&#8217; container  :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker create -v /root/.ssh/ -v /opt/janitoo/etc/ --name roomba_store bibi21000/janitoo_roomba /bin/true
+<div class="code bash highlight-python"><div class="highlight"><pre>$ make docker-local-store
 </pre></div>
 </div>
 <p>Create a &#8216;running&#8217; container :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ docker create --volumes-from roomba_store -p 8885:22 --name roomba_running bibi21000/janitoo_roomba
+<div class="code bash highlight-python"><div class="highlight"><pre>$ make docker-local-running
 </pre></div>
 </div>
 <p>Yous should now have 2 created containers :</p>
@@ -169,7 +165,7 @@ a6459f44a4d9        bibi21000/janitoo_roomba   &quot;/root/auto.sh&quot;     29 
 </pre></div>
 </div>
 <div class="code bash highlight-python"><div class="highlight"><pre>CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS              PORTS                  NAMES
-a6459f44a4d9        bibi21000/janitoo_roomba       &quot;/root/auto.sh&quot;     30 seconds ago      Up 6 seconds        0.0.0.0:8885-&gt;22/tcp   roomba_running
+a6459f44a4d9        bibi21000/janitoo_roomba       &quot;/root/auto.sh&quot;     30 seconds ago      Up 6 seconds        0.0.0.0:8882-&gt;22/tcp   roomba_running
 </pre></div>
 </div>
 <p>And stop it :</p>
@@ -184,7 +180,7 @@ a6459f44a4d9        bibi21000/janitoo_roomba       &quot;/root/auto.sh&quot;    
 <div class="section" id="configuration">
 <h3>Configuration<a class="headerlink" href="#configuration" title="Permalink to this headline">¶</a></h3>
 <p>Update the roomba configuration file :</p>
-<div class="code bash highlight-python"><div class="highlight"><pre>$ ssh root@127.0.0.1 -p 8885
+<div class="code bash highlight-python"><div class="highlight"><pre>$ ssh root@127.0.0.1 -p 8882
 </pre></div>
 </div>
 <p>Default password is janitoo. You can change it but it will be restored on the next running container update. Prefer the key solutions.</p>
