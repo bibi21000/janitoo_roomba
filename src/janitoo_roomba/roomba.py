@@ -205,6 +205,14 @@ class RoombaRoowifi(JNTComponent):
         poll_value = self.values[uuid].create_poll_value(default=60)
         self.values[poll_value.uuid] = poll_value
 
+        uuid = "request_timeout"
+        self.values[uuid] = self.value_factory['config_float'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The timeout for requests',
+            label='req_timeout',
+            default=5,
+        )
+
         uuid = "username"
         self.values[uuid] = self.value_factory['config_string'](options=self.options, uuid=uuid,
             node_uuid=self.uuid,
@@ -302,7 +310,7 @@ class RoombaRoowifi(JNTComponent):
             if locked == True:
                 try:
                     auth = (self.values['username'].data, self.values['password'].data)
-                    r = requests.get('http://' + self.values['ip_ping_config'].data + '/roomba.json', auth=auth)
+                    r = requests.get('http://' + self.values['ip_ping_config'].data + '/roomba.json', auth=auth, timeout=self.values['request_timeout'].data)
                     self._telemetry = json_loads(r.text)
                     logger.debug("[%s] - retrieve telemetry : %s", self.__class__.__name__, self._telemetry)
                     self._temperature = float(self._telemetry['response']['r17']['value'])
@@ -483,6 +491,14 @@ class Roomba900(JNTComponent):
         )
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
+
+        uuid = "request_timeout"
+        self.values[uuid] = self.value_factory['config_float'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The timeout for requests',
+            label='req_timeout',
+            default=5,
+        )
 
         uuid = "battery_charge"
         self.values[uuid] = self.value_factory['sensor_string'](options=self.options, uuid=uuid,
@@ -689,7 +705,7 @@ class Roomba900(JNTComponent):
             uri = 'https://irobot.axeda.com/services/v1/rest/Scripto/execute/AspenApiRequest?blid={blid}&robotpwd={robotpwd}&method={command}'
             if value is not None:
                 uri += '&value=%7B%0A%20%20%22remoteCommand%22%20:%20%22{value}%22%0A%7D';
-            r = requests.get(uri.format(**params))
+            r = requests.get(uri.format(**params), timeout=self.values['request_timeout'].data)
             ret = json_loads(r.text)
             return ret
         except Exception:
