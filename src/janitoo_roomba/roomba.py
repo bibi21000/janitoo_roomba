@@ -391,7 +391,7 @@ class RoombaRoowifi(JNTComponent):
             params['exec'] = 6
         elif data == "idle":
             params['exec'] = 1
-        r = requests.get('http://' + self.values['ip_ping_config'].data + '/rwr.cgi', params = params, auth=auth)
+        r = requests.get('http://' + self.values['ip_ping_config'].data + '/rwr.cgi', params = params, auth=auth, timeout=self.values['request_timeout'].data)
 
     def set_drive(self, node_uuid, index, data):
         """Drive the robot
