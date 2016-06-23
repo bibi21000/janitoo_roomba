@@ -81,6 +81,10 @@
 <li class="toctree-l2"><a class="reference internal" href="../docker.html#administer-your-containers">Administer your containers</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../irobot.html"> irobot cloud (serie 900)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../irobot.html#getting-your-id">Getting your id</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="../using_doc.html"> Using documentation</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../using_doc.html#the-header">The header</a></li>
 </ul>
@@ -128,11 +132,115 @@
 <p>The Roomba Janitoo helper
 It handle all communications to the Roomba vacuums</p>
 <dl class="class">
+<dt id="janitoo_roomba.roomba.Roomba900">
+<em class="property">class </em><tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">Roomba900</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">janitoo.component.JNTComponent</span></tt></p>
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.check_heartbeat">
+<tt class="descname">check_heartbeat</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.check_heartbeat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.check_heartbeat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the component is &#8216;available&#8217;</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.command">
+<tt class="descname">command</tt><big>(</big><em>command</em>, <em>value=None</em>, <em>args=None</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.command"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Send command to the roomba 900</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.get_battery_charge">
+<tt class="descname">get_battery_charge</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.get_battery_charge"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.get_battery_charge" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the battery charge</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.get_battery_left">
+<tt class="descname">get_battery_left</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.get_battery_left"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.get_battery_left" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the battery charge</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.get_battery_percent">
+<tt class="descname">get_battery_percent</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.get_battery_percent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.get_battery_percent" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the battery charge</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.get_cycle">
+<tt class="descname">get_cycle</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.get_cycle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.get_cycle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current cycle</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.get_phase">
+<tt class="descname">get_phase</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.get_phase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.get_phase" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current phase</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.get_status">
+<tt class="descname">get_status</tt><big>(</big><em>node_uuid</em>, <em>index</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.get_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.get_status" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dock state</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.get_telemetry">
+<tt class="descname">get_telemetry</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.get_telemetry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.get_telemetry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Roomba method which fetches telemetry data about the robot.
+{</p>
+<blockquote>
+<div>&#8220;status&#8221;: &#8220;OK&#8221;,
+&#8220;method&#8221;: &#8220;getStatus&#8221;,
+&#8220;sku&#8221;: &#8220;&#8221;,
+&#8220;country&#8221;: &#8220;&#8221;,
+&#8220;postalCode&#8221;: &#8220;&#8221;,
+&#8220;regDate&#8221;: &#8220;2016-06-23&#8221;,
+&#8220;hardwareVersion&#8221;: &#8220;&#8221;,
+&#8220;manualUpdate&#8221;: 0.0,
+&#8220;swUpdateAvailable&#8221;: &#8220;&#8221;,
+&#8220;schedHold&#8221;: 0.0,
+&#8220;autoEvacCount&#8221;: &#8220;&#8221;,
+&#8220;autoEvacFlags&#8221;: &#8220;&#8221;,
+&#8220;wifiDiagnostics&#8221;: &#8220;&#8221;,
+&#8220;autoEvacModel&#8221;: &#8220;&#8221;,
+&#8220;milestones&#8221;: &#8220;&#8221;,
+&#8220;robotName&#8221;: &#8220;Roomba&#8221;,
+&#8220;robotLanguage&#8221;: 1.0,
+&#8220;tzName&#8221;: &#8220;Europe/Paris&#8221;,
+&#8220;twoPass&#8221;: 0.0,
+&#8220;noAutoPasses&#8221;: &#8220;&#8221;,
+&#8220;openOnly&#8221;: 0.0,
+&#8220;carpetBoost&#8221;: 0.0,
+&#8220;binPause&#8221;: 1.0,
+&#8220;vacHigh&#8221;: 0.0,
+&#8220;noPP&#8221;: 0.0,
+&#8220;ecoCharge&#8221;: 0.0,
+&#8220;mission&#8221;: &#8220;{&#8220;nMssn&#8221;:8,&#8221;done&#8221;:&#8221;cncl&#8221;,&#8221;flags&#8221;:32,&#8221;sqft&#8221;:0,&#8221;runM&#8221;:0,&#8221;chrgM&#8221;:0,&#8221;pauseM&#8221;:1,&#8221;doneM&#8221;:0,&#8221;dirt&#8221;:0,&#8221;chrgs&#8221;:0,&#8221;saves&#8221;:0,&#8221;evacs&#8221;:0,&#8221;pauseId&#8221;:0,&#8221;wlBars&#8221;:[0,0,0,0,0]}&#8221;,
+&#8220;preventativeMaintenance&#8221;: &#8220;[{&#8220;partId&#8221;:&#8221;bin&#8221;,&#8221;date&#8221;:&#8221;2016-06-23&#8221;,&#8221;distance&#8221;:55,&#8221;runtime&#8221;:0,&#8221;months&#8221;:0,&#8221;notified&#8221;:false},{&#8220;partId&#8221;:&#8221;core&#8221;,&#8221;date&#8221;:&#8221;2016-06-23&#8221;,&#8221;distance&#8221;:55,&#8221;runtime&#8221;:0,&#8221;months&#8221;:0,&#8221;notified&#8221;:false},{&#8220;partId&#8221;:&#8221;extractor&#8221;,&#8221;date&#8221;:&#8221;2016-06-23&#8221;,&#8221;distance&#8221;:55,&#8221;runtime&#8221;:0,&#8221;months&#8221;:0,&#8221;notified&#8221;:false}]&#8221;,
+&#8220;cleanSchedule&#8221;: &#8220;{&#8220;cycle&#8221;:[&#8220;none&#8221;,&#8221;none&#8221;,&#8221;none&#8221;,&#8221;none&#8221;,&#8221;none&#8221;,&#8221;none&#8221;,&#8221;none&#8221;],&#8221;h&#8221;:[0,0,0,0,0,0,0],&#8221;m&#8221;:[0,0,0,0,0,0,0]}&#8221;,
+&#8220;robot_status&#8221;: &#8220;{&#8220;flags&#8221;:8,&#8221;cycle&#8221;:&#8221;quick&#8221;,&#8221;phase&#8221;:&#8221;run&#8221;,&#8221;pos&#8221;:{&#8220;theta&#8221;:0,&#8221;point&#8221;:{&#8220;x&#8221;:0,&#8221;y&#8221;:0}},&#8221;batPct&#8221;:97,&#8221;expireM&#8221;:0,&#8221;rechrgM&#8221;:0,&#8221;error&#8221;:0,&#8221;notReady&#8221;:0,&#8221;mssnM&#8221;:0,&#8221;sqft&#8221;:0}&#8221;,
+&#8220;softwareVersion&#8221;: &#8220;v1.2.9&#8221;,
+&#8220;lastSwUpdate&#8221;: &#8220;2016-06-23 17:55:55+0000&#8221;,
+&#8220;engBuild&#8221;: &#8220;&#8221;,
+&#8220;bbrun&#8221;: &#8220;{&#8220;hr&#8221;:0,&#8221;min&#8221;:8,&#8221;sqft&#8221;:0,&#8221;nStuck&#8221;:0,&#8221;nScrubs&#8221;:0,&#8221;nPicks&#8221;:23,&#8221;nPanics&#8221;:0,&#8221;nCliffsF&#8221;:24,&#8221;nCliffsR&#8221;:34,&#8221;nMBStll&#8221;:0,&#8221;nWStll&#8221;:0,&#8221;nCBump&#8221;:0}&#8221;,
+&#8220;missing&#8221;: false,
+&#8220;ota&#8221;: &#8220;{&#8220;st&#8221;:0,&#8221;err&#8221;:0,&#8221;lbl&#8221;:&#8221;&#8220;}&#8221;</div></blockquote>
+<p>}</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="janitoo_roomba.roomba.Roomba900.set_button">
+<tt class="descname">set_button</tt><big>(</big><em>node_uuid</em>, <em>index</em>, <em>data</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#Roomba900.set_button"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.Roomba900.set_button" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the dock state</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="janitoo_roomba.roomba.RoombaRoowifi">
 <em class="property">class </em><tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">RoombaRoowifi</tt><big>(</big><em>bus=None</em>, <em>addr=None</em>, <em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">janitoo.component.JNTComponent</span></tt></p>
-<p>This class abstracts a roowifi and gives attributes for telemetry data,
-as well as methods to command the robot</p>
+<p>For roowifi</p>
 <dl class="method">
 <dt id="janitoo_roomba.roomba.RoombaRoowifi.check_heartbeat">
 <tt class="descname">check_heartbeat</tt><big>(</big><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#RoombaRoowifi.check_heartbeat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.RoombaRoowifi.check_heartbeat" title="Permalink to this definition">¶</a></dt>
@@ -231,6 +339,11 @@ A simple copy paste ... does not work</p>
 </dd></dl>
 
 </dd></dl>
+
+<dl class="function">
+<dt id="janitoo_roomba.roomba.make_roomba900">
+<tt class="descclassname">janitoo_roomba.roomba.</tt><tt class="descname">make_roomba900</tt><big>(</big><em>**kwargs</em><big>)</big><a class="reference internal" href="../_modules/janitoo_roomba/roomba.html#make_roomba900"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#janitoo_roomba.roomba.make_roomba900" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="function">
 <dt id="janitoo_roomba.roomba.make_roowifi">
