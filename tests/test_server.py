@@ -54,7 +54,7 @@ class TestRoombaSerser(JNTTServer, JNTTServerCommon):
     broker_password = 'toto'
     server_class = JNTServer
     server_conf = "tests/data/janitoo_roomba.conf"
-    hadds = [HADD%(21,0), HADD%(21,1)]
+    hadds = [HADD%(21,0), HADD%(21,1), HADD%(21,2)]
 
     def test_020_request_broadcast(self):
         self.skipTest("This plugins doesn't send config. Fix test or protocol")
