@@ -1,2 +1,0 @@
-https://github.com/bibi21000/janitoo/archive/master.zip#egg=janitoo
-https://github.com/bibi21000/janitoo_factory/archive/master.zip#egg=janitoo_factory

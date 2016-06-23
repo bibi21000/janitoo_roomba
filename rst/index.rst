@@ -18,6 +18,7 @@ Contents
    :maxdepth: 2
 
     Docker appliance image<docker>
+    irobot cloud (serie 900)<irobot>
     Using documentation <using_doc>
 
 Indices and tables

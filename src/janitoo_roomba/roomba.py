@@ -59,6 +59,9 @@ from janitoo_roomba import OID
 def make_roowifi(**kwargs):
     return RoombaRoowifi(**kwargs)
 
+def make_roomba900(**kwargs):
+    return Roomba900(**kwargs)
+
 commands = {
     "clean":135,
     "dock":143,
@@ -113,16 +116,15 @@ states = {
     }
 
 class RoombaRoowifi(JNTComponent):
-    """This class abstracts a roowifi and gives attributes for telemetry data,
-    as well as methods to command the robot
+    """For roowifi
     """
     def __init__(self, bus=None, addr=None, **kwargs):
         """
         """
         oid = kwargs.pop('oid','%s.roowifi'%OID)
-        name = kwargs.pop('name', "Roomba Vacuum series")
+        name = kwargs.pop('name', "Roowifi series")
         product_name = kwargs.pop('product_name', "Roomba Vacuum")
-        product_type = kwargs.pop('product_type', "Roowifi")
+        product_type = kwargs.pop('product_type', "Vacuum")
         JNTComponent.__init__(self, oid, bus=bus, addr=addr, name=name,
                 product_name=product_name, product_type=product_type, **kwargs)
         logger.debug("[%s] - __init__ node uuid:%s", self.__class__.__name__, self.uuid)
@@ -182,10 +184,10 @@ class RoombaRoowifi(JNTComponent):
         poll_value = self.values[uuid].create_poll_value(default=60)
         self.values[poll_value.uuid] = poll_value
 
-        uuid = "battery_charge"
+        uuid = "battery_percent"
         self.values[uuid] = self.value_factory['sensor_percent'](options=self.options, uuid=uuid,
             node_uuid=self.uuid,
-            help='The charge of the battery',
+            help='The percent charge of the battery',
             label='Percent',
             get_data_cb=self.get_battery_percent,
         )
@@ -392,7 +394,7 @@ class RoombaRoowifi(JNTComponent):
         """Other way to acces the roowifi using a simple tcp socket.
         A simple copy paste ... does not work
         """
-        self._log.info("Start processing clean Command on %s  " % (device))
+        logger.debug("[%s] - Start processing clean Command on %s  ", self.__class__.__name__, device)
         try:
             self.s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             time.sleep(1)
@@ -404,7 +406,7 @@ class RoombaRoowifi(JNTComponent):
             self.s.send(chr(table[command]))
             time.sleep(1)
             self.s.close()
-            self._log.info("%s command Success on %s" % (command,device))
+            self._log.debug("%s command Success on %s" % (command,device))
             if str(command) == "clean":
                 sensors['State'] = State[int(6)]
             if str(command) == "dock" :
@@ -413,5 +415,282 @@ class RoombaRoowifi(JNTComponent):
                 sensors['State'] =  State[int(8)]
             return True
         except Exception:
-            self._log.error("%s Command Failed on %s" % (command,device))
+            logger.error("[%s] - %s Command Failed on %s", self.__class__.__name__, command)
             return False
+
+class Roomba900(JNTComponent):
+    """
+    """
+    def __init__(self, bus=None, addr=None, **kwargs):
+        """ For roomba serie 900 using the irobot cloud
+        From https://github.com/koalazak/dorita980
+        """
+        oid = kwargs.pop('oid','%s.roomba900'%OID)
+        name = kwargs.pop('name', "Roomba 900 series")
+        product_name = kwargs.pop('product_name', "Roomba Vacuum")
+        product_type = kwargs.pop('product_type', "Vacuum")
+        JNTComponent.__init__(self, oid, bus=bus, addr=addr, name=name,
+                product_name=product_name, product_type=product_type, **kwargs)
+        logger.debug("[%s] - __init__ node uuid:%s", self.__class__.__name__, self.uuid)
+        self.telemetry = None
+        self.telemetry_ttl = 60
+        self._telemetry_last = False
+        self._telemetry_next_run = datetime.now() + timedelta(seconds=15)
+        self._lock = threading.Lock()
+        self._battery = -1.0
+        self._battery_left = -1
+        self._battery_charge = -1
+        self._status = "NONE"
+        self._cycle = "NONE"
+        self._phase = "NONE"
+
+        uuid = "status"
+        self.values[uuid] = self.value_factory['sensor_string'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The status of the roomba',
+            label='Status',
+            get_data_cb=self.get_status,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=90)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid = "cycle"
+        self.values[uuid] = self.value_factory['sensor_string'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The current cycle',
+            label='Cycle',
+            get_data_cb=self.get_cycle,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=90)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid = "phase"
+        self.values[uuid] = self.value_factory['sensor_string'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The current phase',
+            label='Phase',
+            get_data_cb=self.get_phase,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=90)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid = "battery_left"
+        self.values[uuid] = self.value_factory['sensor_string'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The time left on battery',
+            label='Expire',
+            get_data_cb=self.get_battery_left,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid = "battery_charge"
+        self.values[uuid] = self.value_factory['sensor_string'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The time left for charging battery',
+            label='Charging',
+            get_data_cb=self.get_battery_charge,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid = "battery_percent"
+        self.values[uuid] = self.value_factory['sensor_percent'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The percent charge of the battery',
+            label='Percent',
+            get_data_cb=self.get_battery_percent,
+        )
+        poll_value = self.values[uuid].create_poll_value(default=60)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid = "ip_ping"
+        self.values[uuid] = self.value_factory['ip_ping'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='Ping the vacuum',
+            label='Ping',
+        )
+        config_value = self.values[uuid].create_config_value(help='The IP of the vacuum', label='IP',)
+        self.values[config_value.uuid] = config_value
+        poll_value = self.values[uuid].create_poll_value(default=300)
+        self.values[poll_value.uuid] = poll_value
+
+        uuid = "blid"
+        self.values[uuid] = self.value_factory['config_string'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='blid to connect the irobot cloud',
+            label='blid',
+        )
+
+        uuid = "robotpwd"
+        self.values[uuid] = self.value_factory['config_password'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='robotpwd to connect the roomba',
+            label='robotpwd',
+        )
+
+        uuid = "buttons"
+        self.values[uuid] = self.value_factory['action_list'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='The buttons on the roomba',
+            label='Buttons',
+            list_items=['clean', 'spot', 'dock', 'quick', 'stop', 'start', 'pause', 'resume', 'wake', 'reset', 'find' ],
+            set_data_cb=self.set_button,
+            is_writeonly = True,
+            cmd_class = COMMAND_ROOMBA_VACUUM,
+        )
+
+    def get_telemetry(self):
+        """Roomba method which fetches telemetry data about the robot.
+        {
+            "status": "OK",
+            "method": "getStatus",
+            "sku": "",
+            "country": "",
+            "postalCode": "",
+            "regDate": "2016-06-23",
+            "hardwareVersion": "",
+            "manualUpdate": 0.0,
+            "swUpdateAvailable": "",
+            "schedHold": 0.0,
+            "autoEvacCount": "",
+            "autoEvacFlags": "",
+            "wifiDiagnostics": "",
+            "autoEvacModel": "",
+            "milestones": "",
+            "robotName": "Roomba",
+            "robotLanguage": 1.0,
+            "tzName": "Europe/Paris",
+            "twoPass": 0.0,
+            "noAutoPasses": "",
+            "openOnly": 0.0,
+            "carpetBoost": 0.0,
+            "binPause": 1.0,
+            "vacHigh": 0.0,
+            "noPP": 0.0,
+            "ecoCharge": 0.0,
+            "mission": "{\"nMssn\":8,\"done\":\"cncl\",\"flags\":32,\"sqft\":0,\"runM\":0,\"chrgM\":0,\"pauseM\":1,\"doneM\":0,\"dirt\":0,\"chrgs\":0,\"saves\":0,\"evacs\":0,\"pauseId\":0,\"wlBars\":[0,0,0,0,0]}",
+            "preventativeMaintenance": "[{\"partId\":\"bin\",\"date\":\"2016-06-23\",\"distance\":55,\"runtime\":0,\"months\":0,\"notified\":false},{\"partId\":\"core\",\"date\":\"2016-06-23\",\"distance\":55,\"runtime\":0,\"months\":0,\"notified\":false},{\"partId\":\"extractor\",\"date\":\"2016-06-23\",\"distance\":55,\"runtime\":0,\"months\":0,\"notified\":false}]",
+            "cleanSchedule": "{\"cycle\":[\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\"],\"h\":[0,0,0,0,0,0,0],\"m\":[0,0,0,0,0,0,0]}",
+            "robot_status": "{\"flags\":8,\"cycle\":\"quick\",\"phase\":\"run\",\"pos\":{\"theta\":0,\"point\":{\"x\":0,\"y\":0}},\"batPct\":97,\"expireM\":0,\"rechrgM\":0,\"error\":0,\"notReady\":0,\"mssnM\":0,\"sqft\":0}",
+            "softwareVersion": "v1.2.9",
+            "lastSwUpdate": "2016-06-23 17:55:55+0000",
+            "engBuild": "",
+            "bbrun": "{\"hr\":0,\"min\":8,\"sqft\":0,\"nStuck\":0,\"nScrubs\":0,\"nPicks\":23,\"nPanics\":0,\"nCliffsF\":24,\"nCliffsR\":34,\"nMBStll\":0,\"nWStll\":0,\"nCBump\":0}",
+            "missing": false,
+            "ota": "{\"st\":0,\"err\":0,\"lbl\":\"\"}"
+        }
+
+        """
+        if self._telemetry_next_run < datetime.now():
+            locked = self._lock.acquire(False)
+            if locked == True:
+                try:
+                    self._telemetry = self.command('getStatus')
+                    logger.debug("[%s] - self._telemetry %s", self.__class__.__name__, self._telemetry)
+                    self._status = self._telemetry['status']
+                    self._telemetry['robot_status'] = json_loads(self._telemetry['robot_status'])
+                    self._battery = self._telemetry['robot_status']['batPct']
+                    self._battery_left = self._telemetry['robot_status']['expireM']
+                    self._battery_charge = self._telemetry['robot_status']['rechrgM']
+                    self._cycle = self._telemetry['robot_status']['cycle']
+                    self._phase = self._telemetry['robot_status']['phase']
+                    self._telemetry_last = True
+                except Exception:
+                    logger.exception("[%s] - Exception in get_telemetry", self.__class__.__name__)
+                    self._telemetry_last = False
+                finally:
+                    self._lock.release()
+                secs = self.values['ip_ping_poll'].data
+                if secs < 0:
+                    secs=60
+                self._telemetry_next_run = datetime.now() + timedelta(seconds=secs)
+
+    def check_heartbeat(self):
+        """Check that the component is 'available'
+        """
+        return self._telemetry_last
+
+    def get_cycle(self, node_uuid, index):
+        """Return the current cycle
+        """
+        self.get_telemetry()
+        return self._cycle
+
+    def get_phase(self, node_uuid, index):
+        """Return the current phase
+        """
+        self.get_telemetry()
+        return self._phase
+
+    def get_battery_percent(self, node_uuid, index):
+        """Return the battery charge
+        """
+        self.get_telemetry()
+        return self._battery
+
+    def get_battery_left(self, node_uuid, index):
+        """Return the battery charge
+        """
+        self.get_telemetry()
+        return self._battery_left
+
+    def get_battery_charge(self, node_uuid, index):
+        """Return the battery charge
+        """
+        self.get_telemetry()
+        return self._battery_charge
+
+    def get_status(self, node_uuid, index):
+        """Return the dock state
+        """
+        self.get_telemetry()
+        return self._status
+
+    def set_button(self, node_uuid, index, data):
+        """Return the dock state
+        """
+        if data == "clean":
+            self.command('multipleFieldSet', 'clean')
+        elif data == "spot":
+            self.command('multipleFieldSet', 'spot')
+        elif data == "dock":
+            self.command('multipleFieldSet', 'dock')
+        elif data == "quick":
+            self.command('multipleFieldSet', 'quick')
+        elif data == "stop":
+            self.command('multipleFieldSet', 'stop')
+        elif data == "start":
+            self.command('multipleFieldSet', 'start')
+        elif data == "pause":
+            self.command('multipleFieldSet', 'pause')
+        elif data == "resume":
+            self.command('multipleFieldSet', 'resume')
+        elif data == "wake":
+            self.command('multipleFieldSet', 'wake')
+        elif data == "reset":
+            self.command('multipleFieldSet', 'reset')
+        elif data == "find":
+            self.command('multipleFieldSet', 'find')
+        else:
+            logger.warning("[%s] - set_button unknown data %s", self.__class__.__name__, data)
+
+    def command(self, command, value=None, args=None):
+        """Send command to the roomba 900
+        """
+        logger.debug("[%s] - Start processing command %s", self.__class__.__name__, command)
+        try:
+            params = {
+                "blid":self.values['blid'].data,
+                "robotpwd":self.values['robotpwd'].data,
+                "command":command,
+                "value":value,
+            }
+            uri = 'https://irobot.axeda.com/services/v1/rest/Scripto/execute/AspenApiRequest?blid={blid}&robotpwd={robotpwd}&method={command}'
+            if value is not None:
+                uri += '&value=%7B%0A%20%20%22remoteCommand%22%20:%20%22{value}%22%0A%7D';
+            r = requests.get(uri.format(**params))
+            ret = json_loads(r.text)
+            return ret
+        except Exception:
+            logger.error("[%s] - Command %s failed", self.__class__.__name__, command)

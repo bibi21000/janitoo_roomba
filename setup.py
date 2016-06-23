@@ -102,6 +102,7 @@ setup(
         ],
         "janitoo.components": [
             "roomba.roowifi = janitoo_roomba.roomba:make_roowifi",
+            "roomba.roomba900 = janitoo_roomba.roomba:make_roomba900",
         ],
     },
 )

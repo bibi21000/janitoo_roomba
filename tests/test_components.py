@@ -58,3 +58,8 @@ class TestComponentRoowifi(JNTTComponent, JNTTComponentCommon):
     """Test the component
     """
     component_name = "roomba.roowifi"
+
+class TestComponentRoomba900(JNTTComponent, JNTTComponentCommon):
+    """Test the component
+    """
+    component_name = "roomba.roomba900"
