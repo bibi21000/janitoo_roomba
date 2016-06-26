@@ -715,7 +715,7 @@ class Roomba900(JNTComponent):
                 "command":command,
                 "value":value,
             }
-            uri = 'https://%s/services/v1/rest/Scripto/execute/AspenApiRequest?blid={blid}&robotpwd={robotpwd}&method={command}'
+            uri = 'https://{ip_cloud}/services/v1/rest/Scripto/execute/AspenApiRequest?blid={blid}&robotpwd={robotpwd}&method={command}'
             if value is not None:
                 uri += '&value=%7B%0A%20%20%22remoteCommand%22%20:%20%22{value}%22%0A%7D';
             r = requests.get(uri.format(**params), timeout=self.values['request_timeout'].data)
