@@ -727,4 +727,4 @@ class Roomba900(JNTComponent):
             ret = json_loads(r.text)
             return ret
         except Exception:
-            logger.exception("[%s] - Command %s failed", self.__class__.__name__, command)
+            logger.exception("[%s] - Command %s failed when calling uri %s", self.__class__.__name__, command, uri)
