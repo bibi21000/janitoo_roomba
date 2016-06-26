@@ -526,7 +526,9 @@ class Roomba900(JNTComponent):
             help='Ping the vacuum',
             label='Ping',
         )
-        config_value = self.values[uuid].create_config_value(help='The IP of the vacuum', label='IP',)
+        config_value = self.values[uuid].create_config_value(
+            help='The IP of the vacuum',
+            label='IP')
         self.values[config_value.uuid] = config_value
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
@@ -536,9 +538,12 @@ class Roomba900(JNTComponent):
             node_uuid=self.uuid,
             help='Ping the irobot cloud',
             label='Ping',
-            default='irobot.axeda.com'
         )
-        config_value = self.values[uuid].create_config_value(help='The address of the irobot cloud', label='IP',)
+        config_value = self.values[uuid].create_config_value(
+            help='The address of the irobot cloud',
+            label='Address',
+            type=0x08,
+            default='irobot.axeda.com')
         self.values[config_value.uuid] = config_value
         poll_value = self.values[uuid].create_poll_value(default=600)
         self.values[poll_value.uuid] = poll_value
@@ -722,4 +727,4 @@ class Roomba900(JNTComponent):
             ret = json_loads(r.text)
             return ret
         except Exception:
-            logger.error("[%s] - Command %s failed", self.__class__.__name__, command)
+            logger.exception("[%s] - Command %s failed", self.__class__.__name__, command)
