@@ -531,6 +531,18 @@ class Roomba900(JNTComponent):
         poll_value = self.values[uuid].create_poll_value(default=300)
         self.values[poll_value.uuid] = poll_value
 
+        uuid = "ip_cloud"
+        self.values[uuid] = self.value_factory['ip_ping'](options=self.options, uuid=uuid,
+            node_uuid=self.uuid,
+            help='Ping the irobot cloud',
+            label='Ping',
+            default='irobot.axeda.com'
+        )
+        config_value = self.values[uuid].create_config_value(help='The address of the irobot cloud', label='IP',)
+        self.values[config_value.uuid] = config_value
+        poll_value = self.values[uuid].create_poll_value(default=600)
+        self.values[poll_value.uuid] = poll_value
+
         uuid = "blid"
         self.values[uuid] = self.value_factory['config_string'](options=self.options, uuid=uuid,
             node_uuid=self.uuid,
@@ -697,12 +709,13 @@ class Roomba900(JNTComponent):
         logger.debug("[%s] - Start processing command %s", self.__class__.__name__, command)
         try:
             params = {
+                "ip_cloud":self.values['ip_cloud'].data,
                 "blid":self.values['blid'].data,
                 "robotpwd":self.values['robotpwd'].data,
                 "command":command,
                 "value":value,
             }
-            uri = 'https://irobot.axeda.com/services/v1/rest/Scripto/execute/AspenApiRequest?blid={blid}&robotpwd={robotpwd}&method={command}'
+            uri = 'https://%s/services/v1/rest/Scripto/execute/AspenApiRequest?blid={blid}&robotpwd={robotpwd}&method={command}'
             if value is not None:
                 uri += '&value=%7B%0A%20%20%22remoteCommand%22%20:%20%22{value}%22%0A%7D';
             r = requests.get(uri.format(**params), timeout=self.values['request_timeout'].data)
