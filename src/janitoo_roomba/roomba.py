@@ -714,7 +714,7 @@ class Roomba900(JNTComponent):
         logger.debug("[%s] - Start processing command %s", self.__class__.__name__, command)
         try:
             params = {
-                "ip_cloud":self.values['ip_cloud'].data,
+                "ip_cloud":self.values['ip_cloud_config'].data,
                 "blid":self.values['blid'].data,
                 "robotpwd":self.values['robotpwd'].data,
                 "command":command,
